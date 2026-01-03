@@ -51,6 +51,8 @@ import { MobileTabBar } from './components/MobileTabBar';
 import { IconNavBar } from './components/IconNavBar';
 import { ContextualMenu } from './components/ContextualMenu';
 import { Workspace } from './components/Workspace';
+import { Launchpad } from './components/Launchpad';
+import { UserControl } from './components/UserControl';
 import { MetadataSidebar } from './components/MetadataSidebar';
 import { BottomStatusBar } from './components/BottomStatusBar';
 import { BottomPanels } from './components/BottomPanels';
@@ -59,6 +61,8 @@ export default function App() {
   // Navigation state
   const [expandedMenu, setExpandedMenu] = useState(false);
   const [selectedNavItem, setSelectedNavItem] = useState('home');
+  const [selectedLaunchpadCategory, setSelectedLaunchpadCategory] = useState('all');
+  const [selectedUserControlView, setSelectedUserControlView] = useState('User Directory');
   
   // Panel visibility state (desktop only)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
@@ -146,7 +150,13 @@ export default function App() {
           />
           
           {/* Main Workspace */}
-          <Workspace selectedNavItem={selectedNavItem} />
+          {selectedNavItem === 'launchpad' ? (
+            <Launchpad selectedCategory={selectedLaunchpadCategory} />
+          ) : selectedNavItem === 'usercontrol' ? (
+            <UserControl selectedView={selectedUserControlView} />
+          ) : (
+            <Workspace selectedNavItem={selectedNavItem} />
+          )}
           
           {/* Metadata Sidebar (toggleable) */}
           {isSidebarOpen && <MetadataSidebar />}

@@ -35,13 +35,18 @@ const menuContent: Record<string, { title: string; items: Array<{ name: string; 
       { name: 'Audio', count: 45 },
     ],
   },
-  bookmarks: {
-    title: 'Bookmarks',
+  launchpad: {
+    title: 'Launchpad',
     items: [
-      { name: 'Important', count: 15, starred: true },
-      { name: 'Read Later', count: 28 },
-      { name: 'References', count: 42 },
-      { name: 'Collections', count: 8 },
+      { name: 'All Apps', count: 48, starred: true },
+      { name: 'Development', count: 6, trend: '+2' },
+      { name: 'AI & Productivity', count: 6 },
+      { name: 'Communication', count: 6 },
+      { name: 'Infrastructure', count: 6 },
+      { name: 'Knowledge & Learning', count: 6 },
+      { name: 'Design & Creative', count: 6 },
+      { name: 'Utilities & Tools', count: 6 },
+      { name: 'Data & Analytics', count: 6 },
     ],
   },
   folders: {
@@ -53,13 +58,17 @@ const menuContent: Record<string, { title: string; items: Array<{ name: string; 
       { name: 'Shared', count: 19, trend: '+4' },
     ],
   },
-  profile: {
-    title: 'Profile',
+  usercontrol: {
+    title: 'User Control',
     items: [
-      { name: 'My Activity', count: 234 },
-      { name: 'Collaborations', count: 12, starred: true },
-      { name: 'Settings', count: undefined },
-      { name: 'Preferences', count: undefined },
+      { name: 'User Directory', count: 42, starred: true },
+      { name: 'My Team', count: 8, trend: '+2' },
+      { name: 'Direct Messages', count: 12, starred: true, trend: '+5' },
+      { name: 'Channels', count: 6 },
+      { name: 'User Admin', count: undefined },
+      { name: 'Roles & Permissions', count: undefined },
+      { name: 'Activity Feed', count: 234, trend: '+12' },
+      { name: 'Notifications', count: 8, starred: true },
     ],
   },
 };

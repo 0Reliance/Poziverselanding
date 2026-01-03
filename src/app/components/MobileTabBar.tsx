@@ -1,4 +1,4 @@
-import { Home, Layers, Files, Bookmark, Folder, User } from 'lucide-react';
+import { Home, Layers, Files, Rocket, Folder, User } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface MobileTabBarProps {
@@ -10,7 +10,7 @@ const navItems = [
   { id: 'home', icon: Home, label: 'Home' },
   { id: 'projects', icon: Layers, label: 'Projects' },
   { id: 'files', icon: Files, label: 'Files' },
-  { id: 'bookmarks', icon: Bookmark, label: 'Saved' },
+  { id: 'launchpad', icon: Rocket, label: 'Launch' },
 ];
 
 export function MobileTabBar({ selectedItem, onSelectItem }: MobileTabBarProps) {
