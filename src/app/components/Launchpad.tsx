@@ -168,12 +168,12 @@ export function Launchpad({ selectedCategory, isMobile = false, onSelectItem }: 
                         {/* Launch Button Overlay */}
                         {app.url !== '#' && (
                           <motion.div
-                            className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity z-20"
+                            className="absolute inset-0 flex items-start justify-center pt-12 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity z-20"
                             initial={false}
                           >
                             <motion.button
                               onClick={(e) => handleLaunch(e, app.url)}
-                              className="flex items-center gap-2 px-4 py-2 rounded-full bg-white text-black font-medium text-sm hover:scale-105 transition-transform"
+                              className="flex items-center gap-2 px-4 py-2 rounded-full bg-white text-black font-medium text-sm hover:scale-105 transition-transform shadow-lg"
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                             >

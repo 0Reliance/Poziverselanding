@@ -135,7 +135,7 @@ App (Root)
 ```
 App Component State:
 ├── Navigation State
-│   ├── selectedNavItem: 'home' | 'projects' | 'files' | 'launchpad' | 'folders' | 'usercontrol'
+│   ├── selectedNavItem: 'home' | 'projects' | 'files' | 'resources' | 'launchpad' | 'usercontrol'
 │   ├── expandedMenu: boolean
 │   ├── selectedLaunchpadCategory: string
 │   ├── selectedUserControlView: string
@@ -224,8 +224,8 @@ The application employs a consistent **Master-Detail** pattern across all major 
   1. Home (cyan) - Dashboard overview
   2. Projects (blue) - Project management
   3. Files (purple) - File explorer
-  4. Launchpad (yellow) - App launcher
-  5. Folders (green) - Folder management
+  4. Resources (emerald) - Developer tools
+  5. Launchpad (yellow) - App launcher
   6. User Control (pink) - User & team management
 
 #### ContextualMenu Component
@@ -377,7 +377,7 @@ The application employs a consistent **Master-Detail** pattern across all major 
 - Blue: `#0EA5E9` - Secondary actions, accents
 - Purple: `#A855F7` - Tertiary actions, highlights
 - Pink: `#EC4899` - User/team related
-- Green: `#10B981` - Success, folders
+- Green: `#10B981` - Success
 - Yellow: `#EAB308` - Warnings, launchpad
 - Orange: `#F97316` - Infrastructure
 

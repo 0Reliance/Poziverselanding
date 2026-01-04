@@ -196,19 +196,21 @@ The Projects section is dedicated to managing, organizing, and tracking developm
   - View Code (Repo URL)
   - View Full History
 
-#### 2.2.3 Project Creation Wizard
-- **Steps:**
-  1. Basic Info (name, description, icon)
-  2. Team Setup (invite members, assign roles)
-  3. Timeline (start date, target completion, milestones)
-  4. Settings (visibility, integrations, templates)
-  5. Confirmation (review and create)
+#### 2.2.3 Project Creation Dialog
+- **Type:** Modal Dialog
+- **Fields:**
+  - Project Name (Required)
+  - Subtitle/Short Description
+  - Full Description
+  - Status (Active, Completed, Archived, In Progress)
+  - Color Theme
+  - Tech Stack (Tags)
+  - Live URL & Repo URL
+  - Progress Percentage
 - **Features:**
-  - Template selection (skip wizard)
-  - Auto-naming suggestions
-  - Validation at each step
-  - Progress indicator
-  - Save draft option
+  - Real-time validation
+  - Icon selection (Lucide icons)
+  - Edit mode support (reused for updating projects)
 
 #### 2.2.4 Project Templates
 - **Available Templates:**
@@ -370,7 +372,7 @@ Projects Page
 │   ├── Activity Section
 │   └── Action Buttons
 ├── Create Project Modal
-│   └── Multi-step Wizard
+│   └── Project Form (Create/Edit)
 └── Empty State
     └── CTA to create first project
 ```
@@ -379,7 +381,7 @@ Projects Page
 
 | Action | Trigger | Response |
 |--------|---------|----------|
-| Create project | Click create button | Open wizard modal |
+| Create project | Click create button | Open create dialog |
 | Search projects | Type in search bar | Filter results in real-time |
 | Filter projects | Click filter button | Display matching projects |
 | View details | Click project card | Open details modal |
@@ -387,7 +389,7 @@ Projects Page
 | Invite team member | Click add member | Show user search/invite form |
 | Update status | Change status dropdown | Save and notify team |
 | Complete milestone | Click milestone | Mark complete, update progress |
-| Delete project | Click delete button | Confirmation modal, archive instead |
+| Delete project | Click delete button | Confirmation dialog, remove project |
 | Share project | Click share button | Show shareable link options |
 
 ### 2.6 Performance Considerations
@@ -970,285 +972,14 @@ Launchpad Page
 
 ---
 
-## 5. FOLDERS SECTION
+## 5. USER CONTROL SECTION
 
 ### 5.1 Overview
-The Folders section provides an organizational hub for managing project folders, team directories, and custom folder structures with advanced features like templates, access control, and metadata organization.
+The User Control section provides comprehensive user and team management, including directory management, administrative controls, and communication features for team coordination.
 
 ### 5.2 Primary Features
 
-#### 5.2.1 Folder Structure Management
-- **Folder Hierarchy:**
-  - Create nested folder structures
-  - Move/copy folders with contents
-  - Batch operations on multiple folders
-  - Undo/redo for folder operations
-- **Folder Information:**
-  - Name and icon/color
-  - Owner and creation date
-  - Size and item count
-  - Last modified date
-  - Access level indicator
-  - Status (archived, shared, private)
-
-#### 5.2.2 Folder Views
-- **Tree View:**
-  - Hierarchical folder tree
-  - Expandable/collapsible folders
-  - Drag-to-reorder
-  - Context menu operations
-- **Board View:**
-  - Kanban-style organization
-  - Drag folders between columns
-  - Custom column definitions
-  - Status-based grouping
-- **Timeline View:**
-  - Folders organized by creation/modification date
-  - Visual timeline
-  - Filter by date range
-
-#### 5.2.3 Folder Templates
-- **Available Templates:**
-  - Project folder structure
-  - Team documentation
-  - Client work organization
-  - Archive structure
-  - Personal knowledge base
-  - Custom template creation
-- **Template Features:**
-  - Pre-created subfolders
-  - Default metadata fields
-  - Permission presets
-  - File type guidelines
-  - README generation
-
-#### 5.2.4 Access Control & Sharing
-- **Folder Permissions:**
-  - Owner, editor, viewer, comment-only roles
-  - Inherit from parent or custom
-  - Guest access with expiry
-  - Public link sharing
-  - Anonymous access option
-- **Sharing:**
-  - Share with team members
-  - Share with groups
-  - Email sharing invitation
-  - Notify on share
-  - Access logs
-
-#### 5.2.5 Folder Metadata & Organization
-- **Custom Fields:**
-  - Text, number, date, dropdown fields
-  - Field inheritance to subfolders
-  - Required field enforcement
-  - Field templates
-- **Tags & Categories:**
-  - Multiple tags per folder
-  - Hierarchical categories
-  - Color-coded tags
-  - Tag-based filtering
-- **Descriptions:**
-  - Rich text descriptions
-  - README files
-  - Guidelines and instructions
-  - Links to related folders
-
-#### 5.2.6 Folder Analytics
-- **Metrics:**
-  - Total items count
-  - Storage usage
-  - Last access date
-  - Most active folder
-  - Growth rate
-- **Reports:**
-  - Folder usage summary
-  - Team contribution stats
-  - File type distribution
-  - Access frequency
-
-#### 5.2.7 Smart Collections
-- **Automatic Collections:**
-  - By date modified
-  - By owner
-  - By size
-  - By access level
-  - Recently accessed
-  - Most accessed
-  - Least accessed
-  - Need permission update
-
-### 5.3 Data Requirements
-
-```typescript
-interface FolderSystem {
-  rootFolder: Folder;
-  userFolders: Folder[];
-  sharedFolders: Folder[];
-  templates: FolderTemplate[];
-  recentlyAccessed: Folder[];
-}
-
-interface Folder {
-  id: string;
-  name: string;
-  slug: string;
-  parentId?: string;
-  icon?: string;
-  color?: string;
-  description?: string;
-  owner: User;
-  created: Date;
-  modified: Date;
-  lastAccessed: Date;
-  archived: boolean;
-  statistics: FolderStatistics;
-  permission: FolderPermission;
-  metadata: Record<string, any>;
-  children?: Folder[];
-  sharedWith?: FolderShare[];
-  templates?: FolderTemplate[];
-  activity?: Activity[];
-}
-
-interface FolderPermission {
-  canView: boolean;
-  canEdit: boolean;
-  canDelete: boolean;
-  canShare: boolean;
-  canManagePermissions: boolean;
-  canCreateSubfolder: boolean;
-}
-
-interface FolderShare {
-  id: string;
-  sharedWith: User | Group | 'public';
-  role: 'viewer' | 'commenter' | 'editor' | 'manager';
-  expiresAt?: Date;
-  link?: string;
-  allowPublic: boolean;
-}
-
-interface FolderTemplate {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  structure: FolderStructure[];
-  metadataFields: MetadataField[];
-  permissions?: FolderPermission;
-  createdBy: User;
-}
-
-interface FolderStatistics {
-  itemCount: number;
-  subfolderCount: number;
-  totalSize: number;
-  lastModified: Date;
-  accessCount: number;
-  contributors: number;
-  growthRate: number;
-}
-```
-
-### 5.4 Component Structure
-
-```
-Folders Page
-├── Page Header
-│   ├── Title
-│   ├── Create Folder Button
-│   ├── View Mode Toggle (Tree/Board/Timeline)
-│   └── Search Bar
-├── Sidebar (Left)
-│   ├── Folder Tree
-│   ├── Quick Access
-│   ├── Shared Folders
-│   ├── Favorites
-│   └── Templates
-├── Main Content Area
-│   ├── Breadcrumb Navigation
-│   ├── Toolbar
-│   │   ├── New Folder Button
-│   │   ├── Upload Files Button
-│   │   ├── Share Button
-│   │   └── More Actions
-│   ├── Filter & Sort Section
-│   ├── Content View
-│   │   └── Folder Grid/Tree/Board
-│   │       └── FolderCard
-│   │           ├── Icon & Name
-│   │           ├── Metadata
-│   │           ├── Statistics
-│   │           └── Action Menu
-│   └── Empty State
-├── Folder Details Sidebar
-│   ├── Folder Info
-│   ├── Metadata Section
-│   ├── Permissions Section
-│   ├── Activity Timeline
-│   └── Action Buttons
-└── Create Folder Modal
-    ├── Name & Icon
-    ├── Template Selection
-    ├── Metadata Fields
-    └── Save Button
-```
-
-### 5.5 User Interactions
-
-| Action | Trigger | Response |
-|--------|---------|----------|
-| Create folder | Click create button | Open modal, create folder |
-| Navigate | Click folder | Open folder, update breadcrumb |
-| View tree | Click tree view | Toggle to tree view |
-| Search folders | Type search | Filter results in real-time |
-| Share folder | Click share button | Show sharing dialog |
-| Edit metadata | Click edit | Show metadata form |
-| Add to favorites | Click star | Add to favorites |
-| Move folder | Drag folder | Move to destination |
-| Apply template | Click template | Create from template |
-| View analytics | Click info | Show folder stats |
-
-### 5.6 Performance Considerations
-
-- **Tree Rendering:** Virtualize tree for large hierarchies
-- **Lazy Loading:** Load subfolders on demand
-- **Caching:** Cache folder structure for 5 minutes
-- **Search:** Debounce 300ms
-- **Icons:** Use emojis by default for performance
-- **Pagination:** Show 50 folders per page
-
-### 5.7 Mobile Adaptations
-
-- Single column layout
-- Collapsible tree view
-- Bottom sheet for create folder
-- Simplified metadata editor
-- Floating action button for share
-
-### 5.8 Acceptance Criteria
-
-- [ ] Create, read, update, delete folders functional
-- [ ] Nested folder hierarchy working correctly
-- [ ] Drag-to-reorder folders functional
-- [ ] Folder sharing with permission levels
-- [ ] Metadata fields customizable and searchable
-- [ ] Tree view renders quickly (100+ folders)
-- [ ] Templates create correct folder structures
-- [ ] Mobile layout optimized
-- [ ] Page load <2 seconds
-- [ ] Accessibility score >90
-
----
-
-## 6. USER CONTROL SECTION
-
-### 6.1 Overview
-The User Control section provides comprehensive user and team management, including directory management, administrative controls, and communication features for team coordination.
-
-### 6.2 Primary Features
-
-#### 6.2.1 User Directory
+#### 5.2.1 User Directory
 - **User List View:**
   - Avatar, name, email, status
   - Department/team indicator
@@ -1279,7 +1010,7 @@ The User Control section provides comprehensive user and team management, includ
   - vCard for financial contacts
   - Email list
 
-#### 6.2.2 User Administration
+#### 5.2.2 User Administration
 - **User Management:**
   - **Add User:** Prominent floating action button (FAB) or header button to add new users.
   - Edit user information
@@ -1301,7 +1032,7 @@ The User Control section provides comprehensive user and team management, includ
   - Team permissions
   - Team activity tracking
 
-#### 6.2.3 Direct Messages (Future Enhancement)
+#### 5.2.3 Direct Messages (Future Enhancement)
 - **Messaging Features:**
   - One-on-one conversations
   - Group chats (future)
@@ -1323,7 +1054,7 @@ The User Control section provides comprehensive user and team management, includ
   - Away with time
   - Focused time blocks
 
-#### 6.2.4 User Invitations & Onboarding
+#### 5.2.4 User Invitations & Onboarding
 - **Invitation Process:**
   - Generate invitation links
   - Email invitations
@@ -1338,7 +1069,7 @@ The User Control section provides comprehensive user and team management, includ
   - Team assignment
   - Permissions configuration
 
-#### 6.2.5 User Activity & Audit Log
+#### 5.2.5 User Activity & Audit Log
 - **Activity Tracking:**
   - Login/logout history
   - Actions performed
@@ -1353,7 +1084,7 @@ The User Control section provides comprehensive user and team management, includ
   - Compliance reporting
   - Retention policy
 
-#### 6.2.6 Permissions & Access Control
+#### 5.2.6 Permissions & Access Control
 - **Permission Levels:**
   - View-only
   - Edit
@@ -1373,7 +1104,7 @@ The User Control section provides comprehensive user and team management, includ
   - Drill down to details
   - Export matrix
 
-### 6.3 Data Requirements
+### 5.3 Data Requirements
 
 ```typescript
 interface User {
@@ -1481,7 +1212,7 @@ interface AuditLog {
 }
 ```
 
-### 6.4 Component Structure
+### 5.4 Component Structure
 
 ```
 User Control Page
@@ -1550,7 +1281,7 @@ User Control Page
     └── Edit Role Modal
 ```
 
-### 6.5 User Interactions
+### 5.5 User Interactions
 
 | Action | Trigger | Response |
 |--------|---------|----------|
@@ -1568,7 +1299,7 @@ User Control Page
 | View audit log | Click log button | Open log viewer with filters |
 | Send message | Type message | Send, update conversation |
 
-### 6.6 Performance Considerations
+### 5.6 Performance Considerations
 
 - **User List:** Paginate or virtualize for 1000+ users
 - **Search:** Debounce 300ms, limit results to 50
@@ -1577,7 +1308,7 @@ User Control Page
 - **Audit Log:** Paginate by date or use infinite scroll
 - **Permissions:** Cache permission matrix for 30 minutes
 
-### 6.7 Mobile Adaptations
+### 5.7 Mobile Adaptations
 
 - Stacked tabs instead of horizontal
 - Single column user list
@@ -1586,7 +1317,7 @@ User Control Page
 - Floating message button
 - Responsive filter sidebar
 
-### 6.8 Acceptance Criteria
+### 5.8 Acceptance Criteria
 
 - [ ] User directory searchable and filterable
 - [ ] User profiles display complete information
@@ -1602,14 +1333,14 @@ User Control Page
 
 ---
 
-## 7. RESOURCES SECTION
+## 6. RESOURCES SECTION
 
-### 7.1 Overview
+### 6.1 Overview
 The Resources section acts as a centralized vault for developer tools, reference materials, and sensitive data. It manages code snippets, API keys, secrets, and bookmarks with specialized views for each type.
 
-### 7.2 Primary Features
+### 6.2 Primary Features
 
-#### 7.2.1 Resource Categories
+#### 6.2.1 Resource Categories
 - **Code Snippets:** Reusable code blocks with syntax highlighting
 - **API Keys:** Management of service keys with usage tracking
 - **Secrets:** Secure storage for sensitive tokens with rotation schedules
@@ -1617,7 +1348,7 @@ The Resources section acts as a centralized vault for developer tools, reference
 - **Servers:** Server connection details and status (future)
 - **Other:** Miscellaneous resources
 
-#### 7.2.2 Resource List View
+#### 6.2.2 Resource List View
 - **Display:** Split-view layout with list on left, details on right
 - **Filtering:**
   - By category (Snippet, Key, Secret, Bookmark, etc.)
@@ -1630,7 +1361,7 @@ The Resources section acts as a centralized vault for developer tools, reference
   - Tag indicators
   - Favorite status
 
-#### 7.2.3 Resource Detail Views
+#### 6.2.3 Resource Detail Views
 
 **A. Code Snippets**
 - Syntax-highlighted code block
@@ -1656,7 +1387,7 @@ The Resources section acts as a centralized vault for developer tools, reference
 - Categorization
 - Rich text notes/description
 
-#### 7.2.4 Management Features
+#### 6.2.4 Management Features
 - **Organization:**
   - Tagging system
   - Favorites marking
@@ -1666,7 +1397,7 @@ The Resources section acts as a centralized vault for developer tools, reference
   - Delete resource
   - Copy values/content
 
-### 7.3 Data Requirements
+### 6.3 Data Requirements
 
 ```typescript
 type ResourceType = 'snippet' | 'secret' | 'key' | 'bookmark' | 'server' | 'other';
@@ -1719,7 +1450,7 @@ interface ResourceMetadata {
 }
 ```
 
-### 7.4 Component Structure
+### 6.4 Component Structure
 
 ```
 Resources Page
@@ -1744,7 +1475,7 @@ Resources Page
 │       └── Tags Section
 ```
 
-### 7.5 User Interactions
+### 6.5 User Interactions
 
 | Action | Trigger | Response |
 |--------|---------|----------|
@@ -1756,7 +1487,7 @@ Resources Page
 | Open bookmark | Click open button | Open URL in new tab |
 | Toggle favorite | Click star | Update favorite status |
 
-### 7.6 Acceptance Criteria
+### 6.6 Acceptance Criteria
 
 - [ ] All resource types render correctly
 - [ ] Sensitive data is masked by default
@@ -1766,9 +1497,9 @@ Resources Page
 
 ---
 
-## 8. CROSS-CUTTING CONCERNS
+## 7. CROSS-CUTTING CONCERNS
 
-### 8.1 Navigation Between Sections
+### 7.1 Navigation Between Sections
 
 All sections should support:
 - Smooth transitions between views
@@ -1777,7 +1508,7 @@ All sections should support:
 - State preservation during navigation
 - Breadcrumb navigation
 
-### 8.2 Data Consistency
+### 7.2 Data Consistency
 
 - Real-time updates across sections
 - Conflict resolution for simultaneous edits
@@ -1785,7 +1516,7 @@ All sections should support:
 - Automatic sync with backend
 - Offline capability (future)
 
-### 8.3 Error Handling
+### 7.3 Error Handling
 
 - User-friendly error messages
 - Retry mechanisms
@@ -1793,7 +1524,7 @@ All sections should support:
 - Error logging and reporting
 - Recovery suggestions
 
-### 8.4 Notifications
+### 7.4 Notifications
 
 - Toast notifications for actions
 - Persistent notifications for important events
@@ -1803,7 +1534,7 @@ All sections should support:
 
 ---
 
-## 9. IMPLEMENTATION TIMELINE
+## 8. IMPLEMENTATION TIMELINE
 
 **Phase 2 Development Order (Recommended):**
 
@@ -1811,9 +1542,8 @@ All sections should support:
 2. **Week 3-4:** Projects Section  
 3. **Week 5-6:** Files Section (Backend integration)
 4. **Week 7:** Launchpad Enhancements
-5. **Week 8:** Folders Section
-6. **Week 9-10:** User Control Section
-7. **Week 11-12:** Integration & Testing
+5. **Week 8-9:** User Control Section
+6. **Week 10-11:** Integration & Testing
 
 **Phase 3-4:** Advanced features and optimizations
 
