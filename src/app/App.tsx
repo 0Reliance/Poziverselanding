@@ -62,8 +62,9 @@ export default function App() {
   // Navigation state
   const [expandedMenu, setExpandedMenu] = useState(false);
   const [selectedNavItem, setSelectedNavItem] = useState('home');
-  const [selectedLaunchpadCategory] = useState('all');
-  const [selectedUserControlView] = useState('User Directory');
+  const [selectedLaunchpadCategory, setSelectedLaunchpadCategory] = useState('all');
+  const [selectedUserControlView, setSelectedUserControlView] = useState('User Directory');
+  const [selectedResourceId, setSelectedResourceId] = useState('b1');
   
   // Panel visibility state (desktop only)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
@@ -148,6 +149,15 @@ export default function App() {
             isExpanded={expandedMenu}
             selectedItem={selectedNavItem}
             onCollapse={() => setExpandedMenu(false)}
+            onSelectItem={(item) => {
+              if (selectedNavItem === 'resources') {
+                setSelectedResourceId(item);
+              } else if (selectedNavItem === 'launchpad') {
+                setSelectedLaunchpadCategory(item);
+              } else if (selectedNavItem === 'usercontrol') {
+                setSelectedUserControlView(item);
+              }
+            }}
           />
           
           {/* Main Workspace */}
@@ -156,7 +166,7 @@ export default function App() {
           ) : selectedNavItem === 'usercontrol' ? (
             <UserControl selectedView={selectedUserControlView} />
           ) : selectedNavItem === 'resources' ? (
-            <ResourcesView />
+            <ResourcesView selectedResourceId={selectedResourceId} />
           ) : (
             <Workspace selectedNavItem={selectedNavItem} />
           )}

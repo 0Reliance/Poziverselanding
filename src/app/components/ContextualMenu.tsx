@@ -1,13 +1,15 @@
 import { ChevronLeft, Search, Clock, Star, Archive, Folder, TrendingUp, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { resources } from './resources/data';
 
 interface ContextualMenuProps {
   isExpanded: boolean;
   selectedItem: string;
   onCollapse: () => void;
+  onSelectItem?: (item: string) => void;
 }
 
-const menuContent: Record<string, { title: string; items: Array<{ name: string; count?: number; starred?: boolean; trend?: string }> }> = {
+const menuContent: Record<string, { title: string; items: Array<{ name: string; id?: string; count?: number; starred?: boolean; trend?: string }> }> = {
   home: {
     title: 'Quick Access',
     items: [
@@ -34,6 +36,15 @@ const menuContent: Record<string, { title: string; items: Array<{ name: string; 
       { name: 'Videos', count: 23 },
       { name: 'Audio', count: 45 },
     ],
+  },
+  resources: {
+    title: 'Resources',
+    items: resources.map(r => ({
+      name: r.title,
+      id: r.id,
+      starred: r.isFavorite,
+      // Map type to a subtitle or similar if ContextualMenu supported it, but it just supports name/count/trend
+    })),
   },
   launchpad: {
     title: 'Launchpad',
@@ -73,7 +84,7 @@ const menuContent: Record<string, { title: string; items: Array<{ name: string; 
   },
 };
 
-export function ContextualMenu({ isExpanded, selectedItem, onCollapse }: ContextualMenuProps) {
+export function ContextualMenu({ isExpanded, selectedItem, onCollapse, onSelectItem }: ContextualMenuProps) {
   const content = menuContent[selectedItem] || menuContent.home;
 
   return (
@@ -145,6 +156,7 @@ export function ContextualMenu({ isExpanded, selectedItem, onCollapse }: Context
               {content.items.map((item, index) => (
                 <motion.button
                   key={item.name}
+                  onClick={() => onSelectItem?.(item.id || item.name)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
