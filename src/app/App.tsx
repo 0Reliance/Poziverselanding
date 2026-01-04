@@ -58,6 +58,7 @@ import { BottomStatusBar } from './components/BottomStatusBar';
 import { BottomPanels } from './components/BottomPanels';
 import { ResourcesView } from './components/resources/ResourcesView';
 import { HomeView } from './components/HomeView';
+import { Project } from './data/projects';
 
 export default function App() {
   // Navigation state
@@ -66,6 +67,9 @@ export default function App() {
   const [selectedLaunchpadCategory, setSelectedLaunchpadCategory] = useState('all');
   const [selectedUserControlView, setSelectedUserControlView] = useState('User Directory');
   const [selectedResourceCategory, setSelectedResourceCategory] = useState('all');
+  
+  // Project selection state
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   
   // Panel visibility state (desktop only)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
@@ -179,16 +183,23 @@ export default function App() {
               if (nav !== 'home') setExpandedMenu(true);
             }} />
           ) : (
-            <Workspace selectedNavItem={selectedNavItem} />
+            <Workspace 
+              selectedNavItem={selectedNavItem} 
+              onSelectProject={setSelectedProject}
+            />
           )}
           
           {/* Metadata Sidebar (toggleable) */}
-          {isSidebarOpen && <MetadataSidebar />}
+          {isSidebarOpen && <MetadataSidebar selectedProject={selectedProject} />}
         </div>
 
         {/* Mobile Layout - Single column workspace only */}
         <div className="flex-1 md:hidden overflow-hidden pb-16">
-          <Workspace selectedNavItem={selectedNavItem} isMobile />
+          <Workspace 
+            selectedNavItem={selectedNavItem} 
+            isMobile 
+            onSelectProject={setSelectedProject}
+          />
         </div>
       </div>
       

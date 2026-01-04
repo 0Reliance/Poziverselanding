@@ -184,21 +184,17 @@ The Projects section is dedicated to managing, organizing, and tracking developm
 - **Search:** Full-text search across name and description
 
 #### 2.2.2 Project Details Panel
-- **Display:** Modal or sidebar showing full project information
+- **Display:** Sidebar showing full project information (MetadataSidebar)
 - **Content:**
   - Project overview and description
-  - Team composition with roles
-  - Timeline and milestones
-  - Linked files and resources
+  - Tech Stack
+  - Team composition (Collaborators)
   - Activity history
-  - Custom metadata fields
-  - Related projects
+  - Project Stats (Views, Stars, Forks)
 - **Actions:**
-  - Edit project details
-  - Add/remove team members
-  - Update status
-  - Archive/delete
-  - Share project link
+  - Launch Project (Live URL)
+  - View Code (Repo URL)
+  - View Full History
 
 #### 2.2.3 Project Creation Wizard
 - **Steps:**
@@ -274,24 +270,39 @@ The Projects section is dedicated to managing, organizing, and tracking developm
 ```typescript
 interface Project {
   id: string;
-  name: string;
+  title: string;
+  subtitle: string;
   description: string;
-  icon: IconType;
-  status: 'active' | 'paused' | 'completed' | 'archived';
+  status: 'active' | 'completed' | 'archived' | 'in-progress';
+  liveUrl: string;
+  repoUrl: string;
+  techStack: string[];
+  lastUpdated: string;
+  icon: any; // Lucide icon component
+  color: 'cyan' | 'blue' | 'purple' | 'pink' | 'green' | 'yellow' | 'orange';
   progress: number;
-  priority: 'critical' | 'high' | 'normal' | 'low';
-  owner: User;
-  team: ProjectMember[];
-  startDate: Date;
-  targetEndDate: Date;
-  actualEndDate?: Date;
-  milestones: Milestone[];
-  tags: string[];
-  metadata: Record<string, any>;
-  integrations: Integration[];
-  activities: Activity[];
-  createdAt: Date;
-  updatedAt: Date;
+  collaborators: Collaborator[];
+  activity: Activity[];
+  stats: ProjectStats;
+}
+
+interface Collaborator {
+  initials: string;
+  name: string;
+  status: 'online' | 'offline' | 'away';
+}
+
+interface Activity {
+  action: string;
+  time: string;
+  user: string;
+  icon: any;
+}
+
+interface ProjectStats {
+  views: number;
+  stars: number;
+  forks: number;
 }
 
 interface ProjectMember {
