@@ -1,9 +1,8 @@
 import { motion } from 'motion/react';
 import { useState } from 'react';
-import { HardDrive, Cloud, Server, Database, Laptop, Network, Plus, MoreVertical, RefreshCw, ExternalLink, Trash2, Edit } from 'lucide-react';
+import { HardDrive, Plus, MoreVertical, RefreshCw, ExternalLink, Trash2, Edit } from 'lucide-react';
 import { fileSources, FileSource } from '../../data/files';
 import { CreateFileSourceDialog } from './CreateFileSourceDialog';
-import { Button } from '@/app/components/ui/button';
 import { Progress } from '@/app/components/ui/progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/app/components/ui/dropdown-menu';
 

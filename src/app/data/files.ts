@@ -1,4 +1,4 @@
-import { HardDrive, Cloud, Server, Database, FolderGit2, Laptop, Network } from 'lucide-react';
+import { Cloud, Server, Database, Laptop, Network } from 'lucide-react';
 
 export interface FileSource {
   id: string;

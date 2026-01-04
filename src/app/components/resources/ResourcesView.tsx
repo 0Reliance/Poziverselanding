@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Search, Filter, Plus, Grid, List as ListIcon, Code, Key, Shield, Globe, Server, FileJson, Star, Edit, Trash2 } from 'lucide-react';
+import { Search, Plus, Grid, List as ListIcon, Code, Key, Shield, Globe, Server, FileJson, Star, Edit, Trash2 } from 'lucide-react';
 import { resources } from './data';
 import { ResourceItem } from './types';
 import { cn } from '@/app/components/ui/utils';
@@ -213,6 +213,7 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
                       </span>
                     )}
                   </div>
+                </div>
               </motion.div>
             ))}
           </div>

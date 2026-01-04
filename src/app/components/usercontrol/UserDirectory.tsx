@@ -2,7 +2,6 @@ import { motion } from 'motion/react';
 import { Search, UserPlus, Mail, MessageSquare, MoreVertical, Shield, Crown, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { users } from '../../data/users';
-import type { User } from '../../data/users';
 
 interface UserDirectoryProps {
   isMobile?: boolean;

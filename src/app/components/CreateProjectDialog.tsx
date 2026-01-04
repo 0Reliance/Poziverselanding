@@ -6,7 +6,7 @@ import { Label } from '@/app/components/ui/label';
 import { Textarea } from '@/app/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { Project } from '../data/projects';
-import { Layout, Globe, Layers, Box, Cpu, Database, Server } from 'lucide-react';
+import { Layout } from 'lucide-react';
 
 interface CreateProjectDialogProps {
   open: boolean;

@@ -1,4 +1,4 @@
-import { Calendar, User as UserIcon, Tag, Clock, FileText, Eye, Users, TrendingUp, Share, Edit3, MessageSquare, Sparkles, Github, ExternalLink, Layers, Code2, Mail, MapPin, Briefcase, Shield, Copy, Globe, Key, Lock, Server, MoreHorizontal, HardDrive, Database, Cloud, Laptop, Network } from 'lucide-react';
+import { User as UserIcon, Tag, Clock, FileText, Eye, TrendingUp, Share, Edit3, MessageSquare, Sparkles, Github, ExternalLink, Layers, Code2, Mail, MapPin, Briefcase, Shield, Copy, Globe, Key, Lock, Server, MoreHorizontal, HardDrive, Database, Network } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Project } from '../data/projects';
 import { LaunchpadItem } from '../data/launchpad';
@@ -670,8 +670,8 @@ export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, select
               Project Info
             </h2>
             <div className="flex items-center gap-1">
-              <div className={`w-2 h-2 rounded-full animate-pulse ${selectedProject.status === 'Live' ? 'bg-green-400' : 'bg-yellow-400'}`} />
-              <span className={`text-xs ${selectedProject.status === 'Live' ? 'text-green-400' : 'text-yellow-400'}`}>{selectedProject.status}</span>
+              <div className={`w-2 h-2 rounded-full animate-pulse ${selectedProject.status === 'active' ? 'bg-green-400' : 'bg-yellow-400'}`} />
+              <span className={`text-xs ${selectedProject.status === 'active' ? 'text-green-400' : 'text-yellow-400'}`}>{selectedProject.status}</span>
             </div>
           </div>
           <p className="text-sm text-gray-500">Metadata and context</p>

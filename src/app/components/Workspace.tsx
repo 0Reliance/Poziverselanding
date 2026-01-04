@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { FileText, Image, Video, Music, Star, Users, Clock, TrendingUp, Share, Download, EllipsisVertical, Zap, Sparkles, Code2, Layers, Box, Layout, Edit, Trash2, ExternalLink } from 'lucide-react';
+import { Star, Clock, Sparkles, Edit, Trash2, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 import { projects, Project } from '../data/projects';
 import { CreateProjectDialog } from './CreateProjectDialog';
@@ -9,10 +9,6 @@ interface WorkspaceProps {
   isMobile?: boolean;
   onSelectProject: (project: Project) => void;
 }
-
-const iconMap: Record<string, any> = {
-  FileText, Image, Video, Music, Code2, Layers, Box, Layout
-};
 
 const colorGradients = {
   cyan: 'from-cyan-500/20 to-cyan-600/30',

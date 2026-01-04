@@ -1,4 +1,4 @@
-import { Github, Code, Server, Database, Layout, Box, Cpu, Globe, Terminal, Cloud, Lock, Search, MessageSquare, Video, Music, Image, FileText, Calendar, Mail, Shield, Wifi, Settings } from 'lucide-react';
+import { Github, Code, Layout, Box, Terminal, Cloud, Search, MessageSquare, Video, Settings } from 'lucide-react';
 
 export interface LaunchpadItem {
   id: string;

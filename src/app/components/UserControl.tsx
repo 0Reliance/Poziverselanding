@@ -3,8 +3,6 @@ import { DirectMessages } from './usercontrol/DirectMessages';
 import { UserAdmin } from './usercontrol/UserAdmin';
 import { ActivityFeed } from './usercontrol/ActivityFeed';
 import { NotificationsView } from './usercontrol/NotificationsView';
-import { motion } from 'motion/react';
-import { Activity, Bell } from 'lucide-react';
 
 interface UserControlProps {
   selectedView: string;

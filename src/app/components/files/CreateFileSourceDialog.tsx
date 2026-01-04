@@ -5,7 +5,7 @@ import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { FileSource } from '../../data/files';
-import { Cloud, Server, Database, Laptop, Network, HardDrive } from 'lucide-react';
+import { Cloud, Server, Database, Laptop, Network } from 'lucide-react';
 
 interface CreateFileSourceDialogProps {
   open: boolean;

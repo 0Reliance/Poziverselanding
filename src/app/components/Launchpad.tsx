@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Search, ExternalLink, Sparkles, Play } from 'lucide-react';
+import { Search, ExternalLink, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { launchpadItems, LaunchpadItem } from '../data/launchpad';
 

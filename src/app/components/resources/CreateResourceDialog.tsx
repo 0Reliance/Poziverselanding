@@ -6,7 +6,6 @@ import { Label } from '@/app/components/ui/label';
 import { Textarea } from '@/app/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
 import { ResourceItem, ResourceType } from './types';
-import { Code, Key, Shield, Globe, Server, MoreHorizontal } from 'lucide-react';
 
 interface CreateResourceDialogProps {
   open: boolean;
