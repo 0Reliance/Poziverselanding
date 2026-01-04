@@ -51,7 +51,7 @@ const menuContent: Record<string, { title: string; items: Array<{ name: string; 
   launchpad: {
     title: 'Launchpad',
     items: [
-      { name: 'All Apps', count: 48, starred: true },
+      { name: 'All Apps', id: 'all', count: 48, starred: true },
       { name: 'Development', count: 6, trend: '+2' },
       { name: 'AI & Productivity', count: 6 },
       { name: 'Communication', count: 6 },

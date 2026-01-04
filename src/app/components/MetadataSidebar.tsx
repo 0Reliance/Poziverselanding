@@ -2,15 +2,119 @@ import { Calendar, User as UserIcon, Tag, Clock, FileText, Eye, Users, TrendingU
 import { motion } from 'motion/react';
 import { Project } from '../data/projects';
 import { LaunchpadItem } from '../data/launchpad';
+import { ResourceItem } from './resources/types';
 import type { User } from '../data/users';
 
 interface MetadataSidebarProps {
   selectedProject: Project | null;
   selectedLaunchpadItem?: LaunchpadItem | null;
   selectedUser?: User | null;
+  selectedResource?: ResourceItem | null;
 }
 
-export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, selectedUser }: MetadataSidebarProps) {
+export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, selectedUser, selectedResource }: MetadataSidebarProps) {
+  // Handle Resource View
+  if (selectedResource) {
+    return (
+      <div className="relative w-80 flex-shrink-0 z-20 h-full overflow-hidden flex flex-col">
+        {/* Glassmorphism background */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-xl border-l border-white/10">
+          <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-blue-500/5" />
+        </div>
+        
+        {/* Content */}
+        <div className="relative h-full flex flex-col overflow-y-auto custom-scrollbar">
+          {/* Header */}
+          <div className="p-6 border-b border-white/10 flex-shrink-0">
+            <div className="flex items-center justify-between mb-1">
+              <h2 className="text-white font-semibold flex items-center gap-2">
+                <Code2 className="w-4 h-4 text-cyan-400" />
+                Resource Details
+              </h2>
+              <div className="flex items-center gap-2">
+                <button className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+                  <Share className="w-3.5 h-3.5" />
+                </button>
+                <button className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+                  <Edit3 className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+            <p className="text-sm text-gray-500 capitalize">{selectedResource.type}</p>
+          </div>
+          
+          {/* Resource Header */}
+          <div className="p-6 border-b border-white/10 flex-shrink-0 text-center">
+            <motion.div 
+              className="relative w-20 h-20 mx-auto mb-4"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl opacity-20 blur-xl" />
+              <div className="relative w-full h-full rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center shadow-2xl">
+                <FileText className="w-8 h-8 text-white" />
+              </div>
+            </motion.div>
+            
+            <h3 className="text-xl text-white font-semibold mb-1">{selectedResource.title}</h3>
+            <p className="text-cyan-400 text-sm font-medium mb-4">{selectedResource.subtitle}</p>
+            
+            <div className="flex flex-wrap gap-2 justify-center">
+              {selectedResource.tags.map(tag => (
+                <span key={tag} className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] text-gray-400">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Info Grid */}
+          <div className="p-6 space-y-6">
+            {selectedResource.type === 'snippet' && selectedResource.content && (
+              <div className="space-y-3">
+                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">Code Snippet</h4>
+                <div className="bg-[#0d1117] rounded-xl border border-white/20 overflow-hidden shadow-lg">
+                  <div className="p-3 overflow-x-auto">
+                    <pre className="font-mono text-xs text-gray-200 leading-relaxed">
+                      <code>{selectedResource.content}</code>
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {selectedResource.type === 'key' && selectedResource.metadata.value && (
+              <div className="space-y-3">
+                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">API Key</h4>
+                <div className="bg-white/5 rounded-xl border border-white/10 p-3">
+                  <code className="font-mono text-xs text-gray-300 break-all">
+                    {selectedResource.metadata.value}
+                  </code>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">Metadata</h4>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                  <span className="text-xs text-gray-500">Created</span>
+                  <span className="text-xs text-gray-300">{selectedResource.createdAt}</span>
+                </div>
+                {selectedResource.updatedAt && (
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                    <span className="text-xs text-gray-500">Updated</span>
+                    <span className="text-xs text-gray-300">{selectedResource.updatedAt}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Handle User View
   if (selectedUser) {
     return (

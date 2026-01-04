@@ -61,6 +61,7 @@ import { HomeView } from './components/HomeView';
 import { Project } from './data/projects';
 import { LaunchpadItem } from './data/launchpad';
 import { User, users } from './data/users';
+import { ResourceItem } from './components/resources/types';
 
 export default function App() {
   // Navigation state
@@ -74,6 +75,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedLaunchpadItem, setSelectedLaunchpadItem] = useState<LaunchpadItem | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedResource, setSelectedResource] = useState<ResourceItem | null>(null);
   
   // Panel visibility state (desktop only)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
@@ -182,6 +184,7 @@ export default function App() {
                 setSelectedLaunchpadItem(item);
                 setSelectedProject(null);
                 setSelectedUser(null);
+                setSelectedResource(null);
               }}
             />
           ) : selectedNavItem === 'usercontrol' ? (
@@ -193,11 +196,20 @@ export default function App() {
                   setSelectedUser(user);
                   setSelectedProject(null);
                   setSelectedLaunchpadItem(null);
+                  setSelectedResource(null);
                 }
               }}
             />
           ) : selectedNavItem === 'resources' ? (
-            <ResourcesView selectedCategory={selectedResourceCategory} />
+            <ResourcesView 
+              selectedCategory={selectedResourceCategory} 
+              onSelectItem={(item) => {
+                setSelectedResource(item);
+                setSelectedProject(null);
+                setSelectedLaunchpadItem(null);
+                setSelectedUser(null);
+              }}
+            />
           ) : selectedNavItem === 'home' ? (
             <HomeView onNavigate={(nav) => {
               setSelectedNavItem(nav);
@@ -220,6 +232,7 @@ export default function App() {
               selectedProject={selectedProject} 
               selectedLaunchpadItem={selectedLaunchpadItem}
               selectedUser={selectedUser}
+              selectedResource={selectedResource}
             />
           )}
         </div>
