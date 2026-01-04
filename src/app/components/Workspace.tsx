@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { FileText, Image, Video, Music, Star, Users, Clock, TrendingUp, Share, Download, EllipsisVertical, Zap, Sparkles, Code2, Layers, Box, Layout, Edit, Trash2 } from 'lucide-react';
+import { FileText, Image, Video, Music, Star, Users, Clock, TrendingUp, Share, Download, EllipsisVertical, Zap, Sparkles, Code2, Layers, Box, Layout, Edit, Trash2, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 import { projects, Project } from '../data/projects';
 import { CreateProjectDialog } from './CreateProjectDialog';
@@ -88,7 +88,7 @@ export function Workspace({ selectedNavItem, isMobile = false, onSelectProject }
   return (
     <div className="relative flex-1 z-10">
       {/* Glassmorphism background */}
-      <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-white/[0.02]" />
       
       {/* Content */}
       <div className="relative h-full flex flex-col">
@@ -199,8 +199,21 @@ export function Workspace({ selectedNavItem, isMobile = false, onSelectProject }
                       {/* Pattern overlay */}
                       <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }} />
                       
-                      {/* Status badge */}
+                      {/* Status badge & Launch Button */}
                       <div className="absolute top-4 right-4 flex items-center gap-2">
+                        {item.liveUrl && item.liveUrl !== '#' && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(item.liveUrl, '_blank');
+                            }}
+                            className="px-2.5 py-1 rounded-lg bg-white text-black text-[10px] font-bold uppercase tracking-wider hover:scale-105 transition-transform flex items-center gap-1.5 shadow-lg mr-1"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                            Launch
+                          </button>
+                        )}
+                        
                         {item.isStarred && (
                           <div className="p-1.5 rounded-lg bg-black/20 backdrop-blur-md border border-white/10">
                             <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />

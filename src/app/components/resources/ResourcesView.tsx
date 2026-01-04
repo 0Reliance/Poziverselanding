@@ -82,7 +82,7 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
   return (
     <div className="relative flex-1 z-10 h-full flex flex-col">
       {/* Glassmorphism background */}
-      <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-white/[0.02]" />
       
       {/* Header */}
       <div className="p-8 border-b border-white/10">
