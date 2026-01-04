@@ -57,6 +57,7 @@ import { MetadataSidebar } from './components/MetadataSidebar';
 import { BottomStatusBar } from './components/BottomStatusBar';
 import { BottomPanels } from './components/BottomPanels';
 import { ResourcesView } from './components/resources/ResourcesView';
+import { HomeView } from './components/HomeView';
 
 export default function App() {
   // Navigation state
@@ -140,7 +141,12 @@ export default function App() {
             selectedItem={selectedNavItem}
             onSelectItem={(item) => {
               setSelectedNavItem(item);
-              setExpandedMenu(true);
+              // Only expand menu for items that have sub-menus or complex views
+              if (item !== 'home') {
+                setExpandedMenu(true);
+              } else {
+                setExpandedMenu(false);
+              }
             }}
           />
           
@@ -167,6 +173,11 @@ export default function App() {
             <UserControl selectedView={selectedUserControlView} />
           ) : selectedNavItem === 'resources' ? (
             <ResourcesView selectedCategory={selectedResourceCategory} />
+          ) : selectedNavItem === 'home' ? (
+            <HomeView onNavigate={(nav) => {
+              setSelectedNavItem(nav);
+              if (nav !== 'home') setExpandedMenu(true);
+            }} />
           ) : (
             <Workspace selectedNavItem={selectedNavItem} />
           )}

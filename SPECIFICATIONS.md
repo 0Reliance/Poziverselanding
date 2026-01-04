@@ -11,93 +11,36 @@
 ## 1. HOME SECTION
 
 ### 1.1 Overview
-The Home section serves as the dashboard's landing page and overview hub. It provides at-a-glance visibility into:
-- Recent activities across all sections
-- Key metrics and KPIs
-- Personalized recommendations
-- Quick start actions
-- System health status
+The Home section serves as the central information hub and landing page for the Poziverse Workspace. Unlike other functional sections, it focuses on orientation, navigation guidance, and high-level status rather than direct content management.
 
 ### 1.2 Primary Features
 
-#### 1.2.1 Welcome & Status Overview
-- **Display:** Personalized greeting with current time and status
-- **Content:** 
-  - System status (uptime, resource usage)
-  - Quick stats (active projects, pending tasks, notifications)
-  - Current date/time with timezone
-- **Interactions:** Click to drill down to detailed status page
+#### 1.2.1 Landing Experience
+- **Default State:** The application loads the Home section by default.
+- **Layout:** A clean, information-centric layout free from the standard document grid panels.
+- **Navigation:** The contextual side menu remains closed by default to maximize screen real estate for the welcome experience.
 
-#### 1.2.2 Recent Activity Feed
-- **Display:** Timeline of recent actions across all sections
-- **Content:**
-  - Project updates
-  - File modifications
-  - Team member activities
-  - System events
-- **Sorting:** By timestamp (newest first)
-- **Filtering:** By type, user, date range
-- **Pagination:** Load more with infinite scroll
-- **Item Structure:** Icon, actor, action, target, timestamp
+#### 1.2.2 Information Hub
+- **Welcome Area:** Personalized greeting and system status summary.
+- **Quick Links:** Direct access to common tasks (Create Project, Upload File, etc.).
+- **Documentation & Instructions:**
+  - "Getting Started" guide for new users.
+  - Links to internal documentation (Architecture, Guidelines).
+  - Recent system updates or release notes.
 
-#### 1.2.3 Quick Stats Cards
-- **Display:** Grid of metric cards (2-4 visible on desktop)
-- **Metrics:**
-  - Total Projects (active/inactive/completed)
-  - Team Members (online/offline)
-  - Files Managed (by type)
-  - Storage Used (% of quota)
-  - Recent Logins (count/last login)
-- **Interactions:** Click card to navigate to related section
-- **Styling:** Color-coded by metric type
+#### 1.2.3 Status & Metrics
+- **System Health:** Visual indicators for service status (API, Database, Storage).
+- **Workspace Overview:** High-level counts of active projects and resources.
 
-#### 1.2.4 Pinned Items Shortcuts
-- **Display:** User-configured favorite items
-- **Features:**
-  - Drag-to-reorder pinned items
-  - Add/remove items from context menu
-  - Quick access to frequently used projects/files
-  - Maximum 8 visible shortcuts
-- **Persistence:** Stored in localStorage initially, backend later
+### 1.3 User Interaction
+- **Navigation Behavior:** Clicking "Home" in the primary navigation bar closes any open contextual menus and returns to this landing view.
+- **Actionable Cards:** Information cards may contain buttons to jump to specific functional areas (e.g., "Go to Launchpad").
 
-#### 1.2.5 Upcoming Events & Deadlines
-- **Display:** Calendar-like widget or timeline
-- **Content:**
-  - Project milestones
-  - Team meetings
-  - Scheduled deployments
-  - Maintenance windows
-- **Visual Indicators:**
-  - Color-coded by priority (urgent/high/normal)
-  - Days remaining counter
-- **Actions:** Click to view details or navigate to calendar
+### 1.4 Data Requirements
+- **Static Content:** Instructional text and links.
+- **Dynamic Content:** User name, system status flags, simple counters.
 
-#### 1.2.6 System Announcements
-- **Display:** Dismissable notification banner
-- **Content:**
-  - New feature announcements
-  - Maintenance notices
-  - Security alerts
-  - Team messages
-- **Styling:** Alert or info-level styling
-- **Persistence:** Dismissal state tracked per user
-
-### 1.3 Data Requirements
-
-**Data Source:** Initially mock data, integrate with backend API later
-
-```typescript
-interface HomePageData {
-  userGreeting: string;
-  systemStatus: SystemStatus;
-  quickStats: QuickStat[];
-  recentActivity: ActivityItem[];
-  pinnedItems: PinnedItem[];
-  upcomingEvents: Event[];
-  announcements: Announcement[];
-}
-
-interface SystemStatus {
+---
   uptime: string;
   cpuUsage: number;
   memoryUsage: number;
