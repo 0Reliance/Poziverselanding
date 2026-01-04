@@ -3,8 +3,13 @@ import { ArrowRight, Book, Code, Layers, Rocket, Shield, Terminal, Zap } from 'l
 
 export function HomeView({ onNavigate }: { onNavigate: (navItem: string) => void }) {
   return (
-    <div className="h-full w-full overflow-y-auto bg-black/20 backdrop-blur-sm">
-      <div className="max-w-5xl mx-auto p-8 md:p-12 space-y-12">
+    <div className="relative h-full w-full">
+      {/* Fixed Glass Background */}
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm pointer-events-none" />
+
+      {/* Scrollable Content */}
+      <div className="absolute inset-0 overflow-y-auto custom-scrollbar">
+        <div className="max-w-5xl mx-auto p-8 md:p-12 space-y-12">
         
         {/* Hero Section */}
         <motion.div 
@@ -121,6 +126,7 @@ export function HomeView({ onNavigate }: { onNavigate: (navItem: string) => void
         </motion.div>
 
       </div>
+      </div>
     </div>
   );
 }
@@ -138,14 +144,14 @@ function QuickLinkCard({ icon: Icon, title, description, color, onClick, delay }
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
       onClick={onClick}
-      className={`group text-left p-6 rounded-2xl bg-white/5 border border-white/10 transition-all duration-300 hover:bg-white/10 ${colors[color].split(' ')[0]} ${colors[color].split(' ')[1]}`}
+      className={`group text-left p-6 rounded-2xl bg-white/5 border border-white/10 transition-colors duration-300 hover:bg-white/10 ${colors[color].split(' ')[0]} ${colors[color].split(' ')[1]}`}
     >
       <div className={`mb-4 p-3 rounded-xl bg-white/5 w-fit ${colors[color].split(' ').pop()}`}>
         <Icon className="w-6 h-6" />
       </div>
       <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
         {title}
-        <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+        <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
       </h3>
       <p className="text-sm text-gray-400 leading-relaxed">
         {description}
