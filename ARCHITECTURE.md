@@ -249,6 +249,16 @@ App Component State:
   - Messaging interface (placeholder)
 - **Future Integration:** Authentication system, real user data
 
+#### ResourcesView Component
+- **File:** `src/app/components/resources/ResourcesView.tsx`
+- **Features:**
+  - Split-view layout (List + Detail)
+  - Resource management (Snippets, Keys, Secrets, Bookmarks)
+  - Search and filtering by category
+  - Type-specific detail views with specialized actions
+  - Secure handling of sensitive data (masking/unmasking)
+- **Data Structure:** `ResourceItem` with polymorphic metadata
+
 #### MetadataSidebar Component
 - **File:** `src/app/components/MetadataSidebar.tsx`
 - **Width:** 320-380px (toggleable)

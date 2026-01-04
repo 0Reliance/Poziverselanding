@@ -1648,9 +1648,173 @@ User Control Page
 
 ---
 
-## 7. CROSS-CUTTING CONCERNS
+## 7. RESOURCES SECTION
 
-### 7.1 Navigation Between Sections
+### 7.1 Overview
+The Resources section acts as a centralized vault for developer tools, reference materials, and sensitive data. It manages code snippets, API keys, secrets, and bookmarks with specialized views for each type.
+
+### 7.2 Primary Features
+
+#### 7.2.1 Resource Categories
+- **Code Snippets:** Reusable code blocks with syntax highlighting
+- **API Keys:** Management of service keys with usage tracking
+- **Secrets:** Secure storage for sensitive tokens with rotation schedules
+- **Bookmarks:** Curated links to documentation and tools
+- **Servers:** Server connection details and status (future)
+- **Other:** Miscellaneous resources
+
+#### 7.2.2 Resource List View
+- **Display:** Split-view layout with list on left, details on right
+- **Filtering:**
+  - By category (Snippet, Key, Secret, Bookmark, etc.)
+  - Full-text search across titles and tags
+  - Favorites filter
+- **List Item Content:**
+  - Type-specific icon
+  - Title and subtitle
+  - Description preview
+  - Tag indicators
+  - Favorite status
+
+#### 7.2.3 Resource Detail Views
+
+**A. Code Snippets**
+- Syntax-highlighted code block
+- Language indicator
+- Copy-to-clipboard functionality
+- Usage statistics
+
+**B. API Keys**
+- Masked/Unmasked key display
+- Usage metrics (Today, Week, Month)
+- Metadata: Environment, Service, Rate Limit, Expiration
+- Permission scopes display
+
+**C. Secrets**
+- Secure value toggle (Hide/Reveal)
+- Rotation schedule tracking (Last rotated, Next rotation)
+- Associated services list
+- Recent access log
+
+**D. Bookmarks**
+- URL display with "Open" action
+- Last visited timestamp
+- Categorization
+- Rich text notes/description
+
+#### 7.2.4 Management Features
+- **Organization:**
+  - Tagging system
+  - Favorites marking
+- **Actions:**
+  - Create new resource
+  - Edit existing resource
+  - Delete resource
+  - Copy values/content
+
+### 7.3 Data Requirements
+
+```typescript
+type ResourceType = 'snippet' | 'secret' | 'key' | 'bookmark' | 'server' | 'other';
+
+interface ResourceItem {
+  id: string;
+  type: ResourceType;
+  title: string;
+  subtitle?: string;
+  tags: string[];
+  icon?: IconType;
+  metadata: ResourceMetadata;
+  content?: string; // For snippets
+  isFavorite?: boolean;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+interface ResourceMetadata {
+  // Common
+  description?: string;
+  
+  // Key specific
+  value?: string;
+  environment?: string;
+  service?: string;
+  rateLimit?: string;
+  expires?: string;
+  usage?: {
+    today: string;
+    thisWeek: string;
+    thisMonth: string;
+  };
+  permissions?: string[];
+
+  // Secret specific
+  lastRotated?: string;
+  nextRotation?: string;
+  associatedServices?: string[];
+  recentAccess?: { service: string; time: string }[];
+
+  // Bookmark specific
+  url?: string;
+  lastVisited?: string;
+  category?: string;
+  
+  // Snippet specific
+  language?: string;
+  usageCount?: number;
+}
+```
+
+### 7.4 Component Structure
+
+```
+Resources Page
+├── Split Layout
+│   ├── List Sidebar (Left)
+│   │   ├── Search & Filter Header
+│   │   │   ├── Search Input
+│   │   │   ├── Filter Menu
+│   │   │   └── Add Button
+│   │   └── Resource List
+│   │       └── ResourceListItem
+│   └── Detail View (Right)
+│       ├── Detail Header
+│       │   ├── Icon & Title
+│       │   ├── Type Badge
+│       │   └── Action Buttons (Favorite, Edit, Delete)
+│       ├── Type-Specific Content
+│       │   ├── SnippetDetail (Code block)
+│       │   ├── KeyDetail (Value, Stats, Metadata)
+│       │   ├── SecretDetail (Value, Rotation, Access)
+│       │   └── BookmarkDetail (URL, Notes)
+│       └── Tags Section
+```
+
+### 7.5 User Interactions
+
+| Action | Trigger | Response |
+|--------|---------|----------|
+| Select category | Click nav item | Filter list by type |
+| Search resources | Type in search | Filter list real-time |
+| View details | Click list item | Show details in right panel |
+| Copy value | Click copy button | Copy to clipboard, show toast |
+| Reveal secret | Click eye icon | Toggle visibility of sensitive data |
+| Open bookmark | Click open button | Open URL in new tab |
+| Toggle favorite | Click star | Update favorite status |
+
+### 7.6 Acceptance Criteria
+
+- [ ] All resource types render correctly
+- [ ] Sensitive data is masked by default
+- [ ] Copy functionality works for all types
+- [ ] Search filters by title, tag, and type
+- [ ] Responsive design handles split view correctly
+
+---
+
+## 8. CROSS-CUTTING CONCERNS
+
+### 8.1 Navigation Between Sections
 
 All sections should support:
 - Smooth transitions between views
@@ -1659,7 +1823,7 @@ All sections should support:
 - State preservation during navigation
 - Breadcrumb navigation
 
-### 7.2 Data Consistency
+### 8.2 Data Consistency
 
 - Real-time updates across sections
 - Conflict resolution for simultaneous edits
@@ -1667,7 +1831,7 @@ All sections should support:
 - Automatic sync with backend
 - Offline capability (future)
 
-### 7.3 Error Handling
+### 8.3 Error Handling
 
 - User-friendly error messages
 - Retry mechanisms
@@ -1675,7 +1839,7 @@ All sections should support:
 - Error logging and reporting
 - Recovery suggestions
 
-### 7.4 Notifications
+### 8.4 Notifications
 
 - Toast notifications for actions
 - Persistent notifications for important events
@@ -1685,7 +1849,7 @@ All sections should support:
 
 ---
 
-## 8. IMPLEMENTATION TIMELINE
+## 9. IMPLEMENTATION TIMELINE
 
 **Phase 2 Development Order (Recommended):**
 

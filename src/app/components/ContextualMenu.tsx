@@ -1,6 +1,5 @@
 import { ChevronLeft, Search, Clock, Star, Archive, Folder, TrendingUp, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { resources } from './resources/data';
 
 interface ContextualMenuProps {
   isExpanded: boolean;
@@ -39,12 +38,15 @@ const menuContent: Record<string, { title: string; items: Array<{ name: string; 
   },
   resources: {
     title: 'Resources',
-    items: resources.map(r => ({
-      name: r.title,
-      id: r.id,
-      starred: r.isFavorite,
-      // Map type to a subtitle or similar if ContextualMenu supported it, but it just supports name/count/trend
-    })),
+    items: [
+      { name: 'All Items', id: 'all', count: 47 },
+      { name: 'Code Snippets', id: 'snippet', count: 12 },
+      { name: 'API Keys', id: 'key', count: 8 },
+      { name: 'Secrets', id: 'secret', count: 5 },
+      { name: 'Bookmarks', id: 'bookmark', count: 15 },
+      { name: 'Servers', id: 'server', count: 4 },
+      { name: 'Other', id: 'other', count: 3 },
+    ],
   },
   launchpad: {
     title: 'Launchpad',

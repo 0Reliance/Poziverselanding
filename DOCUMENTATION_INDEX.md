@@ -44,7 +44,7 @@
 **Time: 1 hour | Read in this order:**
 
 1. **[README.md](./README.md)** - Project overview
-2. **[SPECIFICATIONS.md](./SPECIFICATIONS.md)** - All 6 sections
+2. **[SPECIFICATIONS.md](./SPECIFICATIONS.md)** - All 7 sections
 3. **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Roadmap section
 4. **[REVIEW_SUMMARY.md](./REVIEW_SUMMARY.md)** - Success metrics
 
@@ -91,7 +91,7 @@
 | Spatial Architecture | Desktop 4-column layout, Mobile 1-column layout | ~100 |
 | Component Hierarchy | Tree structure of all components | ~50 |
 | Data Flow | State management patterns | ~80 |
-| Component Specs | 11 components × 150-200 lines each | ~1,800 |
+| Component Specs | 12 components × 150-200 lines each | ~1,800 |
 | Design System | Glassmorphism, colors, typography, spacing | ~250 |
 | Responsive Design | Breakpoints, Desktop/Mobile optimization | ~150 |
 | Performance | Code splitting, Rendering, Animations | ~120 |
