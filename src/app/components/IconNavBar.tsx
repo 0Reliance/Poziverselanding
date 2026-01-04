@@ -1,4 +1,4 @@
-import { Home, Rocket, Users, Folder, Files, Layers, Zap, Sparkles } from 'lucide-react';
+import { Home, Rocket, Users, Folder, Files, Layers, Zap, Sparkles, Code } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface IconNavBarProps {
@@ -10,6 +10,7 @@ const navItems = [
   { id: 'home', icon: Home, label: 'Home', gradient: 'from-cyan-400 to-blue-500', glow: 'cyan-400' },
   { id: 'projects', icon: Layers, label: 'Projects', gradient: 'from-blue-400 to-indigo-500', glow: 'blue-400' },
   { id: 'files', icon: Files, label: 'Files', gradient: 'from-purple-400 to-pink-500', glow: 'purple-400' },
+  { id: 'resources', icon: Code, label: 'Resources', gradient: 'from-emerald-400 to-teal-500', glow: 'emerald-400' },
   { id: 'launchpad', icon: Rocket, label: 'Launchpad', gradient: 'from-yellow-400 to-orange-500', glow: 'yellow-400' },
   { id: 'folders', icon: Folder, label: 'Folders', gradient: 'from-green-400 to-emerald-500', glow: 'green-400' },
   { id: 'usercontrol', icon: Users, label: 'User Control', gradient: 'from-pink-400 to-rose-500', glow: 'pink-400' },

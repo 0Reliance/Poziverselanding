@@ -56,6 +56,7 @@ import { UserControl } from './components/UserControl';
 import { MetadataSidebar } from './components/MetadataSidebar';
 import { BottomStatusBar } from './components/BottomStatusBar';
 import { BottomPanels } from './components/BottomPanels';
+import { ResourcesView } from './components/resources/ResourcesView';
 
 export default function App() {
   // Navigation state
@@ -154,6 +155,8 @@ export default function App() {
             <Launchpad selectedCategory={selectedLaunchpadCategory} />
           ) : selectedNavItem === 'usercontrol' ? (
             <UserControl selectedView={selectedUserControlView} />
+          ) : selectedNavItem === 'resources' ? (
+            <ResourcesView />
           ) : (
             <Workspace selectedNavItem={selectedNavItem} />
           )}
