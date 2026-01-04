@@ -1,6 +1,6 @@
 import { LucideIcon } from 'lucide-react';
 
-export type ResourceType = 'snippet' | 'secret' | 'key' | 'bookmark';
+export type ResourceType = 'snippet' | 'secret' | 'key' | 'bookmark' | 'server' | 'other';
 
 export interface ResourceItem {
   id: string;

@@ -188,5 +188,103 @@ export function useAuth() {
       description: 'Global error handling middleware',
       language: 'JavaScript'
     }
+  },
+
+  // Servers
+  {
+    id: 'srv1',
+    type: 'server',
+    title: 'Local Dev Environment',
+    subtitle: 'Localhost',
+    tags: ['Local', 'Development', 'Docker'],
+    isFavorite: true,
+    createdAt: 'Jan 1, 2026',
+    metadata: {
+      status: 'online',
+      provider: 'local',
+      host: 'localhost',
+      port: '3000',
+      services: [
+        { name: 'Frontend', port: 3000, status: 'running' },
+        { name: 'Backend API', port: 8080, status: 'running' },
+        { name: 'Postgres', port: 5432, status: 'running' }
+      ],
+      commands: [
+        { label: 'Start All', cmd: 'docker-compose up -d' },
+        { label: 'Stop All', cmd: 'docker-compose down' },
+        { label: 'Logs', cmd: 'docker-compose logs -f' }
+      ]
+    }
+  },
+  {
+    id: 'srv2',
+    type: 'server',
+    title: 'Supabase Production',
+    subtitle: 'Supabase',
+    tags: ['Production', 'Database', 'Auth'],
+    isFavorite: false,
+    createdAt: 'Dec 1, 2025',
+    metadata: {
+      status: 'online',
+      provider: 'supabase',
+      region: 'us-east-1',
+      projectUrl: 'https://xyzproject.supabase.co',
+      credentials: [
+        { key: 'Anon Key', value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' },
+        { key: 'Service Role', value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' },
+        { key: 'DB Connection', value: 'postgresql://postgres:[YOUR-PASSWORD]@db.xyzproject.supabase.co:5432/postgres' }
+      ],
+      links: [
+        { label: 'Dashboard', url: 'https://supabase.com/dashboard/project/xyz' },
+        { label: 'API Docs', url: 'https://supabase.com/dashboard/project/xyz/api' }
+      ]
+    }
+  },
+
+  // Other (Notes)
+  {
+    id: 'o1',
+    type: 'other',
+    title: 'Project Roadmap',
+    subtitle: 'Planning',
+    tags: ['Planning', 'Q1', 'Roadmap'],
+    isFavorite: true,
+    createdAt: 'Jan 4, 2026',
+    content: `# Q1 Roadmap
+
+## Phase 1: Foundation
+- [x] Setup project structure
+- [x] Configure Tailwind
+- [ ] Implement Auth
+
+## Phase 2: Core Features
+- [ ] User Dashboard
+- [ ] Resource Management
+- [ ] Settings Panel
+
+## Notes
+Remember to check the design system for consistency.`,
+    metadata: {
+      format: 'markdown',
+      lastEdited: 'Just now'
+    }
+  },
+  {
+    id: 'o2',
+    type: 'other',
+    title: 'Deployment Checklist',
+    subtitle: 'DevOps',
+    tags: ['DevOps', 'Deployment'],
+    isFavorite: false,
+    createdAt: 'Jan 2, 2026',
+    content: `1. Run tests: \`npm test\`
+2. Build project: \`npm run build\`
+3. Check environment variables
+4. Deploy to Vercel
+5. Verify production URL`,
+    metadata: {
+      format: 'markdown',
+      lastEdited: '2 days ago'
+    }
   }
 ];
