@@ -2,7 +2,7 @@ import { Calendar, User as UserIcon, Tag, Clock, FileText, Eye, Users, TrendingU
 import { motion } from 'motion/react';
 import { Project } from '../data/projects';
 import { LaunchpadItem } from '../data/launchpad';
-import { User } from '../data/users';
+import type { User } from '../data/users';
 
 interface MetadataSidebarProps {
   selectedProject: Project | null;
