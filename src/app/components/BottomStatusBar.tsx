@@ -11,8 +11,7 @@ import {
   CircleAlert,
   CircleCheck,
   PanelBottomOpen,
-  PanelRightOpen,
-  ChevronUp
+  PanelRightOpen
 } from 'lucide-react';
 import { useState } from 'react';
 

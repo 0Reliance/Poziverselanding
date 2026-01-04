@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Search, Send, Paperclip, Smile, MoreVertical, Phone, Video, Info } from 'lucide-react';
+import { Search, Send, Paperclip, Smile, Phone, Video, Info } from 'lucide-react';
 import { useState } from 'react';
 
 interface Conversation {

@@ -1,4 +1,4 @@
-import { Code, Key, Lock, Bookmark, Server, MoreHorizontal, FileJson, Database, Globe } from 'lucide-react';
+import { Code, Key, Lock, Bookmark, Server, MoreHorizontal, Database } from 'lucide-react';
 import { ResourceItem, Category } from './types';
 
 export const categories: Category[] = [

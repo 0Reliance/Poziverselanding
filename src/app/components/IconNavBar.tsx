@@ -1,4 +1,4 @@
-import { Home, Rocket, Users, Folder, Files, Layers, Zap, Sparkles, Code } from 'lucide-react';
+import { Home, Rocket, Users, Folder, Files, Layers, Sparkles, Code } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface IconNavBarProps {

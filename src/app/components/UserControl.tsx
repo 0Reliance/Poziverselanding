@@ -2,7 +2,7 @@ import { UserDirectory } from './usercontrol/UserDirectory';
 import { DirectMessages } from './usercontrol/DirectMessages';
 import { UserAdmin } from './usercontrol/UserAdmin';
 import { motion } from 'motion/react';
-import { Users, MessageSquare, ShieldCheck, Activity, Bell, Users as UsersIcon } from 'lucide-react';
+import { Activity, Bell } from 'lucide-react';
 
 interface UserControlProps {
   selectedView: string;

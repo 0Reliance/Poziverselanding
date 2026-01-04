@@ -62,8 +62,8 @@ export default function App() {
   // Navigation state
   const [expandedMenu, setExpandedMenu] = useState(false);
   const [selectedNavItem, setSelectedNavItem] = useState('home');
-  const [selectedLaunchpadCategory, setSelectedLaunchpadCategory] = useState('all');
-  const [selectedUserControlView, setSelectedUserControlView] = useState('User Directory');
+  const [selectedLaunchpadCategory] = useState('all');
+  const [selectedUserControlView] = useState('User Directory');
   
   // Panel visibility state (desktop only)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);

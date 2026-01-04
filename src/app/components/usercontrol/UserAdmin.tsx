@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { UserPlus, Search, Mail, Shield, Crown, Check, X, MoreVertical } from 'lucide-react';
+import { UserPlus, Search, Shield, Crown, Check, X, MoreVertical } from 'lucide-react';
 import { useState } from 'react';
 
 interface UserAdminProps {

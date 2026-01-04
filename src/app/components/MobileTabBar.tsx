@@ -1,4 +1,4 @@
-import { Home, Layers, Files, Rocket, Folder, User } from 'lucide-react';
+import { Home, Layers, Files, Rocket } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface MobileTabBarProps {

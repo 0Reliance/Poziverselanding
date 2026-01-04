@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Search, Filter, Plus, Grid, List as ListIcon, MoreVertical, Copy, ExternalLink, Eye, EyeOff, Clock, Shield, Activity, Star, Trash2, Edit2 } from 'lucide-react';
+import { Search, Filter, Plus, Grid, List as ListIcon, Copy, ExternalLink, Eye, EyeOff, Clock, Shield, Activity, Star, Trash2, Edit2, Code, Key, FileJson, Globe } from 'lucide-react';
 import { categories, resources } from './data';
-import { ResourceItem, Category } from './types';
+import { ResourceItem } from './types';
 import { cn } from '@/app/components/ui/utils';
 
 // --- Sub-components ---
