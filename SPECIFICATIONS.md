@@ -751,19 +751,20 @@ Launchpad is a centralized application launcher providing quick access to the en
 
 #### 4.2.2 Application Display
 - **Card View:**
-  - Application icon/emoji
+  - Application icon (Lucide React Icon)
   - Application name
   - Brief description
   - Category tag
   - Color-coded gradient background
   - Hover animation with scale and glow
-  - Launch button/link
+- **Interaction Model (Master-Detail):**
+  - **Card Click:** Opens the "App Info" panel in the Metadata Sidebar, displaying detailed information, status, and statistics.
+  - **Launch Button:** A distinct button overlay (visible on hover) that directly opens the application URL in a new tab.
 - **Information Visible:**
-  - Icon (emoji or SVG)
+  - Icon
   - Name
-  - Short description (1-2 lines)
-  - Category indicator
-  - URL preview on hover
+  - Short description
+  - External link indicator (if URL is valid)
 
 #### 4.2.3 Search & Filtering
 - **Search Features:**
@@ -827,24 +828,22 @@ Launchpad is a centralized application launcher providing quick access to the en
 ### 4.3 Data Requirements
 
 ```typescript
-interface LaunchpadApplication {
+interface LaunchpadItem {
   id: string;
   name: string;
   description: string;
-  url: string;
   category: string;
-  icon: string; // emoji or URL
-  color: {
-    from: string;
-    to: string;
+  icon: any; // Lucide icon component
+  color: string; // Tailwind gradient classes
+  url: string;
+  repoUrl?: string;
+  tags: string[];
+  status: 'online' | 'offline' | 'maintenance';
+  stats?: {
+    uptime?: string;
+    users?: number;
+    version?: string;
   };
-  tags?: string[];
-  isInternal: boolean;
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy?: User;
-  statistics?: LaunchStatistics;
 }
 
 interface LaunchpadCategory {
@@ -1258,7 +1257,10 @@ The User Control section provides comprehensive user and team management, includ
   - Presence indicator (online/offline/idle)
   - Sorting options (name, status, role, dept)
   - Search and filtering
-- **User Profile Card:**
+- **Interaction Model (Master-Detail):**
+  - **Card Click:** Clicking anywhere on the user card opens the "User Profile" panel in the Metadata Sidebar, displaying detailed information, bio, skills, and contact details.
+  - **Quick Actions:** Direct buttons on the card for "Message" (opens chat) and "Email" (opens mail client).
+- **User Profile Card (Sidebar):**
   - Full contact information
   - Department and role
   - Reporting structure
@@ -1274,12 +1276,12 @@ The User Control section provides comprehensive user and team management, includ
   - Favorites
 - **Directory Export:**
   - CSV export
-  - vCard for contacts
+  - vCard for financial contacts
   - Email list
 
 #### 6.2.2 User Administration
 - **User Management:**
-  - Add new users (invite via email)
+  - **Add User:** Prominent floating action button (FAB) or header button to add new users.
   - Edit user information
   - Deactivate/reactivate users
   - Delete users (admin only)
@@ -1376,25 +1378,23 @@ The User Control section provides comprehensive user and team management, includ
 ```typescript
 interface User {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  role: 'admin' | 'member' | 'guest';
+  status: 'online' | 'away' | 'offline';
+  avatar: string;
   email: string;
-  avatar?: string;
+  department: string;
+  projects: number;
+  lastActive: string;
+  location?: string;
+  joinDate?: string;
   bio?: string;
-  title?: string;
-  department?: string;
-  reportingManager?: User;
-  status: 'active' | 'inactive' | 'invited' | 'suspended';
-  role: Role;
-  teams: Team[];
-  permissions: Permission[];
-  preferences: UserPreferences;
-  lastActive?: Date;
-  timezone?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  lastLogin?: Date;
-  twoFactorEnabled: boolean;
+  skills?: string[];
+  socialLinks?: {
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+  };
 }
 
 interface Role {

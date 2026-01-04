@@ -138,7 +138,12 @@ App Component State:
 │   ├── selectedNavItem: 'home' | 'projects' | 'files' | 'launchpad' | 'folders' | 'usercontrol'
 │   ├── expandedMenu: boolean
 │   ├── selectedLaunchpadCategory: string
-│   └── selectedUserControlView: string
+│   ├── selectedUserControlView: string
+│   └── selectedResourceCategory: string
+├── Selection State (Master-Detail)
+│   ├── selectedProject: Project | null
+│   ├── selectedLaunchpadItem: LaunchpadItem | null
+│   └── selectedUser: User | null
 ├── Panel State (Desktop only)
 │   ├── isTerminalOpen: boolean
 │   ├── isOutputOpen: boolean
@@ -146,6 +151,32 @@ App Component State:
 │   └── isSidebarOpen: boolean
 └── Modal/Dialog State (Future)
 ```
+
+### 3.4 Data Architecture
+
+The application follows a centralized data model with strict TypeScript interfaces. Data is decoupled from components to ensure consistency and ease of maintenance.
+
+#### 3.4.1 Data Sources
+- **Projects:** `src/app/data/projects.ts` - Centralized project definitions.
+- **Launchpad:** `src/app/data/launchpad.ts` - Application and tool definitions.
+- **Users:** `src/app/data/users.ts` - User directory and profile data.
+
+#### 3.4.2 Interaction Patterns
+The application employs a consistent **Master-Detail** pattern across all major sections:
+
+1.  **Projects Section:**
+    - **Master:** Grid of project cards.
+    - **Detail:** Clicking a card opens the `MetadataSidebar` with project details.
+
+2.  **Launchpad Section:**
+    - **Master:** Grid of application cards.
+    - **Detail:** Clicking a card opens the `MetadataSidebar` with app info.
+    - **Action:** A distinct "Launch" button on the card opens the URL directly.
+
+3.  **User Control Section:**
+    - **Master:** Grid of user cards (User Directory).
+    - **Detail:** Clicking a card opens the `MetadataSidebar` with the user profile.
+    - **Action:** Direct "Message" and "Email" buttons on the card.
 
 ---
 

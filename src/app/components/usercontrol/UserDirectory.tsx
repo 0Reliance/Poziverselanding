@@ -1,29 +1,7 @@
 import { motion } from 'motion/react';
 import { Search, UserPlus, Mail, MessageSquare, MoreVertical, Shield, Crown, Zap } from 'lucide-react';
 import { useState } from 'react';
-
-interface User {
-  id: string;
-  name: string;
-  role: 'admin' | 'member' | 'guest';
-  status: 'online' | 'away' | 'offline';
-  avatar: string;
-  email: string;
-  department: string;
-  projects: number;
-  lastActive: string;
-}
-
-const mockUsers: User[] = [
-  { id: '1', name: 'Sarah Chen', role: 'admin', status: 'online', avatar: '👩‍💼', email: 'sarah@poziverse.io', department: 'Engineering', projects: 12, lastActive: 'Now' },
-  { id: '2', name: 'Marcus Rodriguez', role: 'member', status: 'online', avatar: '👨‍💻', email: 'marcus@poziverse.io', department: 'Design', projects: 8, lastActive: '5m ago' },
-  { id: '3', name: 'Emily Watson', role: 'member', status: 'away', avatar: '👩‍🎨', email: 'emily@poziverse.io', department: 'Marketing', projects: 15, lastActive: '1h ago' },
-  { id: '4', name: 'David Kim', role: 'admin', status: 'online', avatar: '👨‍🔬', email: 'david@poziverse.io', department: 'Engineering', projects: 20, lastActive: 'Now' },
-  { id: '5', name: 'Lisa Anderson', role: 'member', status: 'offline', avatar: '👩‍🚀', email: 'lisa@poziverse.io', department: 'Product', projects: 6, lastActive: '2d ago' },
-  { id: '6', name: 'James Turner', role: 'guest', status: 'online', avatar: '👨‍🎓', email: 'james@external.com', department: 'External', projects: 2, lastActive: '10m ago' },
-  { id: '7', name: 'Nina Patel', role: 'member', status: 'online', avatar: '👩‍⚕️', email: 'nina@poziverse.io', department: 'Operations', projects: 9, lastActive: 'Now' },
-  { id: '8', name: 'Alex Foster', role: 'member', status: 'away', avatar: '👨‍🏫', email: 'alex@poziverse.io', department: 'Engineering', projects: 14, lastActive: '30m ago' },
-];
+import { users, User } from '../../data/users';
 
 interface UserDirectoryProps {
   isMobile?: boolean;
@@ -35,7 +13,7 @@ export function UserDirectory({ isMobile = false, onSelectUser }: UserDirectoryP
   const [filterRole, setFilterRole] = useState<string>('all');
   const [hoveredUser, setHoveredUser] = useState<string | null>(null);
 
-  const filteredUsers = mockUsers.filter(user => {
+  const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          user.department.toLowerCase().includes(searchQuery.toLowerCase());
@@ -149,7 +127,8 @@ export function UserDirectory({ isMobile = false, onSelectUser }: UserDirectoryP
               transition={{ duration: 0.3, delay: index * 0.05 }}
               onMouseEnter={() => setHoveredUser(user.id)}
               onMouseLeave={() => setHoveredUser(null)}
-              className="relative group"
+              onClick={() => onSelectUser?.(user.id)}
+              className="relative group cursor-pointer"
             >
               {/* Glow effect */}
               <motion.div
@@ -201,16 +180,25 @@ export function UserDirectory({ isMobile = false, onSelectUser }: UserDirectoryP
                   {/* Actions */}
                   <div className="flex items-center gap-2">
                     <button 
-                      onClick={() => onSelectUser?.(user.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Handle message action
+                      }}
                       className="flex-1 px-3 py-2 rounded-lg bg-cyan-400/20 border border-cyan-400/30 hover:bg-cyan-400/30 text-cyan-400 text-sm transition-all flex items-center justify-center gap-2"
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
                       Message
                     </button>
-                    <button className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-gray-400 hover:text-gray-300 transition-all">
+                    <button 
+                      onClick={(e) => e.stopPropagation()}
+                      className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-gray-400 hover:text-gray-300 transition-all"
+                    >
                       <Mail className="w-3.5 h-3.5" />
                     </button>
-                    <button className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-gray-400 hover:text-gray-300 transition-all">
+                    <button 
+                      onClick={(e) => e.stopPropagation()}
+                      className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-gray-400 hover:text-gray-300 transition-all"
+                    >
                       <MoreVertical className="w-3.5 h-3.5" />
                     </button>
                   </div>

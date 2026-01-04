@@ -59,6 +59,8 @@ import { BottomPanels } from './components/BottomPanels';
 import { ResourcesView } from './components/resources/ResourcesView';
 import { HomeView } from './components/HomeView';
 import { Project } from './data/projects';
+import { LaunchpadItem } from './data/launchpad';
+import { User, users } from './data/users';
 
 export default function App() {
   // Navigation state
@@ -68,8 +70,10 @@ export default function App() {
   const [selectedUserControlView, setSelectedUserControlView] = useState('User Directory');
   const [selectedResourceCategory, setSelectedResourceCategory] = useState('all');
   
-  // Project selection state
+  // Selection state
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedLaunchpadItem, setSelectedLaunchpadItem] = useState<LaunchpadItem | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   
   // Panel visibility state (desktop only)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
@@ -172,9 +176,26 @@ export default function App() {
           
           {/* Main Workspace */}
           {selectedNavItem === 'launchpad' ? (
-            <Launchpad selectedCategory={selectedLaunchpadCategory} />
+            <Launchpad 
+              selectedCategory={selectedLaunchpadCategory} 
+              onSelectItem={(item) => {
+                setSelectedLaunchpadItem(item);
+                setSelectedProject(null);
+                setSelectedUser(null);
+              }}
+            />
           ) : selectedNavItem === 'usercontrol' ? (
-            <UserControl selectedView={selectedUserControlView} />
+            <UserControl 
+              selectedView={selectedUserControlView} 
+              onSelectUser={(userId) => {
+                const user = users.find(u => u.id === userId);
+                if (user) {
+                  setSelectedUser(user);
+                  setSelectedProject(null);
+                  setSelectedLaunchpadItem(null);
+                }
+              }}
+            />
           ) : selectedNavItem === 'resources' ? (
             <ResourcesView selectedCategory={selectedResourceCategory} />
           ) : selectedNavItem === 'home' ? (
@@ -185,12 +206,22 @@ export default function App() {
           ) : (
             <Workspace 
               selectedNavItem={selectedNavItem} 
-              onSelectProject={setSelectedProject}
+              onSelectProject={(project) => {
+                setSelectedProject(project);
+                setSelectedLaunchpadItem(null);
+                setSelectedUser(null);
+              }}
             />
           )}
           
           {/* Metadata Sidebar (toggleable) */}
-          {isSidebarOpen && <MetadataSidebar selectedProject={selectedProject} />}
+          {isSidebarOpen && (
+            <MetadataSidebar 
+              selectedProject={selectedProject} 
+              selectedLaunchpadItem={selectedLaunchpadItem}
+              selectedUser={selectedUser}
+            />
+          )}
         </div>
 
         {/* Mobile Layout - Single column workspace only */}
