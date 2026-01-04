@@ -22,11 +22,10 @@ export function MetadataSidebar({ selectedProject }: MetadataSidebarProps) {
   }
 
   const metadata = [
-    { label: 'Created', value: selectedProject.createdAt, icon: Calendar },
-    { label: 'Modified', value: selectedProject.lastModified, icon: Clock },
-    { label: 'Owner', value: selectedProject.owner, icon: User },
+    { label: 'Modified', value: selectedProject.lastUpdated, icon: Clock },
+    { label: 'Owner', value: selectedProject.collaborators[0]?.name || 'Unknown', icon: User },
     { label: 'Status', value: selectedProject.status, icon: FileText },
-    { label: 'Views', value: selectedProject.views, icon: Eye },
+    { label: 'Views', value: selectedProject.stats.views.toString(), icon: Eye },
   ];
 
   return (
@@ -75,7 +74,7 @@ export function MetadataSidebar({ selectedProject }: MetadataSidebarProps) {
                   <FileText className="w-7 h-7 text-cyan-400" />
                 </motion.div>
                 <p className="text-sm text-white font-medium truncate max-w-[200px]">{selectedProject.title}</p>
-                <p className="text-xs text-gray-400 mt-1">{selectedProject.category}</p>
+                <p className="text-xs text-gray-400 mt-1">{selectedProject.subtitle}</p>
               </div>
             </div>
           </motion.div>

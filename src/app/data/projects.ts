@@ -6,6 +6,7 @@ export interface Project {
   subtitle: string;
   description: string;
   status: 'active' | 'completed' | 'archived' | 'in-progress';
+  isStarred?: boolean;
   liveUrl: string;
   repoUrl: string;
   techStack: string[];
@@ -29,6 +30,7 @@ export const projects: Project[] = [
     subtitle: 'Workspace Orchestrator',
     description: 'A comprehensive workspace management interface with glassmorphism design. Centralizes project management, resource access, and deployment monitoring.',
     status: 'active',
+    isStarred: true,
     liveUrl: 'https://poziverse.com',
     repoUrl: 'https://github.com/genpozi/poziverse',
     techStack: ['React', 'TypeScript', 'Tailwind', 'Framer Motion'],

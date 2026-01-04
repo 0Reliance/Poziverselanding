@@ -112,7 +112,7 @@ export function Workspace({ selectedNavItem, isMobile = false, onSelectProject }
         <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-8'}`}>
           <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
             {projects.map((item, index) => {
-              const Icon = iconMap[item.icon] || FileText;
+              const Icon = item.icon;
               const gradient = colorGradients[item.color as keyof typeof colorGradients];
               const accent = colorAccents[item.color as keyof typeof colorAccents];
               const iconColor = iconColors[item.color as keyof typeof iconColors];
@@ -216,7 +216,7 @@ export function Workspace({ selectedNavItem, isMobile = false, onSelectProject }
                       {/* Title and subtitle */}
                       <div className={isMobile ? 'mb-2' : 'mb-3'}>
                         <h3 className={`text-white font-semibold leading-tight ${isMobile ? 'text-sm mb-0.5' : 'mb-1'}`}>{item.title}</h3>
-                        <p className={`text-gray-500 ${isMobile ? 'text-xs' : 'text-sm'}`}>{item.category}</p>
+                        <p className={`text-gray-500 ${isMobile ? 'text-xs' : 'text-sm'}`}>{item.subtitle}</p>
                       </div>
                       
                       {/* Progress bar */}
@@ -241,7 +241,7 @@ export function Workspace({ selectedNavItem, isMobile = false, onSelectProject }
                       
                       {/* Tags - Limit on mobile */}
                       <div className={`flex flex-wrap gap-1.5 ${isMobile ? 'mb-2' : 'mb-4'}`}>
-                        {item.tags.slice(0, isMobile ? 2 : item.tags.length).map((tag, tagIndex) => (
+                        {item.techStack.slice(0, isMobile ? 2 : item.techStack.length).map((tag, tagIndex) => (
                           <span 
                             key={tagIndex}
                             className={`rounded-md bg-white/5 border border-white/10 text-gray-400 ${isMobile ? 'px-1.5 py-0.5 text-[10px]' : 'px-2 py-0.5 text-xs'}`}
@@ -259,20 +259,13 @@ export function Workspace({ selectedNavItem, isMobile = false, onSelectProject }
                             <Users className={`text-gray-500 ${isMobile ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} />
                             <span className={`text-gray-400 ${isMobile ? 'text-[10px]' : 'text-xs'}`}>{item.collaborators.length}</span>
                           </div>
-                          
-                          {/* Trend - Desktop only */}
-                          {!isMobile && (
-                            <div className="flex items-center gap-1">
-                              <TrendingUp className="w-3.5 h-3.5 text-green-400" />
-                              <span className="text-xs text-green-400 font-medium">+12%</span>
-                            </div>
-                          )}
+
                         </div>
                         
                         {/* Updated time */}
                         <div className="flex items-center gap-1.5">
                           <Clock className={`text-gray-500 ${isMobile ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} />
-                          <span className={`text-gray-500 ${isMobile ? 'text-[10px]' : 'text-xs'}`}>{item.lastModified}</span>
+                          <span className={`text-gray-500 ${isMobile ? 'text-[10px]' : 'text-xs'}`}>{item.lastUpdated}</span>
                         </div>
                       </div>
                     </div>
