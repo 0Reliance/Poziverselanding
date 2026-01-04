@@ -1,44 +1,43 @@
 # NAVIGATION CATEGORY SPECIFICATIONS
 ## Detailed Requirements for Each Dashboard Section
 
-**Version:** 1.0.0  
-**Last Updated:** January 4, 2026  
-**Status:** Specification Phase  
-**Development Priority:** Ordered as listed below
+**Version:** 1.1.0
+**Last Updated:** January 26, 2025
+**Status:** Implementation Phase
+**Development Priority:** Active Development
 
 ---
 
 ## 1. HOME SECTION
 
 ### 1.1 Overview
-The Home section serves as the central information hub and landing page for the Poziverse Workspace. Unlike other functional sections, it focuses on orientation, navigation guidance, and high-level status rather than direct content management.
+The Home section serves as the central information hub and landing page for the Poziverse Workspace. It focuses on orientation, navigation guidance, and high-level status, providing a performant and visually engaging entry point.
 
 ### 1.2 Primary Features
 
 #### 1.2.1 Landing Experience
 - **Default State:** The application loads the Home section by default.
-- **Layout:** A clean, information-centric layout free from the standard document grid panels.
-- **Navigation:** The contextual side menu remains closed by default to maximize screen real estate for the welcome experience.
+- **Layout:** A clean, information-centric layout with a fixed background and scrolling content to ensure smooth animations.
+- **Visuals:** High-quality background blur effects (glassmorphism) optimized for performance.
 
 #### 1.2.2 Information Hub
-- **Welcome Area:** Personalized greeting and system status summary.
-- **Quick Links:** Direct access to common tasks (Create Project, Upload File, etc.).
-- **Documentation & Instructions:**
-  - "Getting Started" guide for new users.
-  - Links to internal documentation (Architecture, Guidelines).
-  - Recent system updates or release notes.
+- **Welcome Area:** Personalized greeting with current date and time.
+- **Quick Stats:** High-level metrics (Active Projects, Total Resources, System Status, Team Members).
+- **Recent Activity:** A feed of recent actions across the workspace (Project updates, File uploads, etc.).
+- **Quick Actions:** Direct access to common tasks (New Project, Add Resource, Launch App, User Settings).
 
 #### 1.2.3 Status & Metrics
 - **System Health:** Visual indicators for service status (API, Database, Storage).
-- **Workspace Overview:** High-level counts of active projects and resources.
+- **Workspace Overview:** Counts of active items and resources.
 
 ### 1.3 User Interaction
-- **Navigation Behavior:** Clicking "Home" in the primary navigation bar closes any open contextual menus and returns to this landing view.
-- **Actionable Cards:** Information cards may contain buttons to jump to specific functional areas (e.g., "Go to Launchpad").
+- **Navigation Behavior:** Clicking "Home" in the primary navigation bar returns to this landing view.
+- **Actionable Cards:** Information cards contain buttons to jump to specific functional areas.
+- **Scroll Performance:** The background blur is decoupled from the scrolling content to prevent jitter and repaint issues.
 
 ### 1.4 Data Requirements
 - **Static Content:** Instructional text and links.
-- **Dynamic Content:** User name, system status flags, simple counters.
+- **Dynamic Content:** User name, system status flags, activity feed, stats counters.
 
 ---
   uptime: string;
@@ -1341,74 +1340,74 @@ The Resources section acts as a centralized vault for developer tools, reference
 ### 6.2 Primary Features
 
 #### 6.2.1 Resource Categories
-- **Code Snippets:** Reusable code blocks with syntax highlighting
-- **API Keys:** Management of service keys with usage tracking
-- **Secrets:** Secure storage for sensitive tokens with rotation schedules
-- **Bookmarks:** Curated links to documentation and tools
-- **Servers:** Server connection details and status (future)
-- **Other:** Miscellaneous resources
+- **Code Snippets:** Reusable code blocks with syntax highlighting.
+- **API Keys:** Management of service keys with usage tracking.
+- **Secrets:** Secure storage for sensitive tokens with rotation schedules.
+- **Bookmarks:** Curated links to documentation and tools.
+- **Servers:** Server connection details and status.
+- **Other:** Miscellaneous resources.
 
 #### 6.2.2 Resource List View
-- **Display:** Split-view layout with list on left, details on right
+- **Display:** Split-view layout with list on left, details on right.
 - **Filtering:**
-  - By category (Snippet, Key, Secret, Bookmark, etc.)
-  - Full-text search across titles and tags
-  - Favorites filter
+  - By category (Snippet, Key, Secret, Bookmark, etc.).
+  - Full-text search across titles and tags.
+  - Favorites filter.
 - **List Item Content:**
-  - Type-specific icon
-  - Title and subtitle
-  - Description preview
-  - Tag indicators
-  - Favorite status
+  - Type-specific icon.
+  - Title and subtitle.
+  - Description preview.
+  - Tag indicators.
+  - Favorite status.
 
 #### 6.2.3 Resource Detail Views
 
 **A. Code Snippets**
-- Syntax-highlighted code block
-- Language indicator
-- Copy-to-clipboard functionality
-- Usage statistics
+- Syntax-highlighted code block.
+- Language indicator.
+- Copy-to-clipboard functionality.
+- Usage statistics.
 
 **B. API Keys**
-- Masked/Unmasked key display
-- Usage metrics (Today, Week, Month)
-- Metadata: Environment, Service, Rate Limit, Expiration
-- Permission scopes display
+- Masked/Unmasked key display.
+- Usage metrics (Today, Week, Month).
+- Metadata: Environment, Service, Rate Limit, Expiration.
+- Permission scopes display.
 
 **C. Secrets**
-- Secure value toggle (Hide/Reveal)
-- Rotation schedule tracking (Last rotated, Next rotation)
-- Associated services list
-- Recent access log
+- Secure value toggle (Hide/Reveal).
+- Rotation schedule tracking (Last rotated, Next rotation).
+- Associated services list.
+- Recent access log.
 
 **D. Bookmarks**
-- URL display with "Open" action
-- Last visited timestamp
-- Categorization
-- Rich text notes/description
+- URL display with "Open" action.
+- Last visited timestamp.
+- Categorization.
+- Rich text notes/description.
 
 #### 6.2.4 Management Features
 - **Organization:**
-  - Tagging system
-  - Favorites marking
+  - Tagging system.
+  - Favorites marking.
 - **Actions:**
-  - Create new resource
-  - Edit existing resource
-  - Delete resource
-  - Copy values/content
+  - **Create Resource:** Modal dialog to add new resources with type-specific fields.
+  - **Edit Resource:** Update existing resource details.
+  - **Delete Resource:** Remove resource with confirmation.
+  - **Copy Values:** One-click copy for keys, secrets, and snippets.
 
 ### 6.3 Data Requirements
 
 ```typescript
-type ResourceType = 'snippet' | 'secret' | 'key' | 'bookmark' | 'server' | 'other';
+export type ResourceType = 'snippet' | 'secret' | 'key' | 'bookmark' | 'server' | 'other';
 
-interface ResourceItem {
+export interface ResourceItem {
   id: string;
   type: ResourceType;
   title: string;
   subtitle?: string;
   tags: string[];
-  icon?: IconType;
+  icon?: any; // Lucide icon
   metadata: ResourceMetadata;
   content?: string; // For snippets
   isFavorite?: boolean;
@@ -1416,7 +1415,7 @@ interface ResourceItem {
   updatedAt?: string;
 }
 
-interface ResourceMetadata {
+export interface ResourceMetadata {
   // Common
   description?: string;
   
@@ -1447,6 +1446,13 @@ interface ResourceMetadata {
   // Snippet specific
   language?: string;
   usageCount?: number;
+  
+  // Server specific
+  hostname?: string;
+  ip?: string;
+  os?: string;
+  status?: 'online' | 'offline' | 'maintenance';
+  uptime?: string;
 }
 ```
 

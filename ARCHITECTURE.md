@@ -115,7 +115,15 @@ App (Root)
 │   ├── Desktop Layout (md+)
 │   │   ├── IconNavBar
 │   │   ├── ContextualMenu
-│   │   ├── Workspace | Launchpad | UserControl
+│   │   ├── Main View Area
+│   │   │   ├── HomeView (Dashboard)
+│   │   │   ├── Workspace (Projects/Files)
+│   │   │   ├── ResourcesView (Resources)
+│   │   │   ├── Launchpad (Apps)
+│   │   │   └── UserControl (Admin/Users)
+│   │   │       ├── UserDirectory
+│   │   │       ├── UserAdmin
+│   │   │       └── DirectMessages
 │   │   └── MetadataSidebar (Toggleable)
 │   └── Mobile Layout (<md)
 │       └── Workspace (Simplified)
@@ -143,13 +151,16 @@ App Component State:
 ├── Selection State (Master-Detail)
 │   ├── selectedProject: Project | null
 │   ├── selectedLaunchpadItem: LaunchpadItem | null
-│   └── selectedUser: User | null
+│   ├── selectedUser: User | null
+│   └── selectedResource: ResourceItem | null
 ├── Panel State (Desktop only)
 │   ├── isTerminalOpen: boolean
 │   ├── isOutputOpen: boolean
 │   ├── isProblemsOpen: boolean
 │   └── isSidebarOpen: boolean
-└── Modal/Dialog State (Future)
+└── Modal/Dialog State
+    ├── isCreateProjectOpen: boolean
+    └── isCreateResourceOpen: boolean
 ```
 
 ### 3.4 Data Architecture
@@ -160,6 +171,7 @@ The application follows a centralized data model with strict TypeScript interfac
 - **Projects:** `src/app/data/projects.ts` - Centralized project definitions.
 - **Launchpad:** `src/app/data/launchpad.ts` - Application and tool definitions.
 - **Users:** `src/app/data/users.ts` - User directory and profile data.
+- **Resources:** `src/app/components/resources/data.ts` - Resource definitions.
 
 #### 3.4.2 Interaction Patterns
 The application employs a consistent **Master-Detail** pattern across all major sections:
@@ -178,6 +190,10 @@ The application employs a consistent **Master-Detail** pattern across all major 
     - **Detail:** Clicking a card opens the `MetadataSidebar` with the user profile.
     - **Action:** Direct "Message" and "Email" buttons on the card.
 
+4.  **Resources Section:**
+    - **Master:** List of resource items.
+    - **Detail:** Clicking an item opens the detail view within the main area.
+
 ---
 
 ## 4. COMPONENT SPECIFICATIONS
@@ -190,9 +206,11 @@ The application employs a consistent **Master-Detail** pattern across all major 
 | **MobileTopBar** | Mobile header | Logo, menu toggle | Mobile only |
 | **IconNavBar** | Primary navigation | Category selection via icons | Desktop only |
 | **ContextualMenu** | Dynamic menu | Context-aware item lists | Desktop only |
+| **HomeView** | Dashboard | Overview, recent activity, stats | Both |
 | **Workspace** | Main content area | Display project cards & items | Both |
 | **Launchpad** | App launcher | Quick access to tools & services | Both |
 | **UserControl** | User management | Directory, admin, messages | Both |
+| **ResourcesView** | Resource manager | Snippets, keys, secrets | Both |
 | **MetadataSidebar** | Info panel | Details about selected items | Desktop only |
 | **BottomPanels** | Development tools | Terminal, output, problems | Desktop only |
 | **BottomStatusBar** | Status indicators | Panel toggles, system info | Desktop only |
@@ -239,6 +257,16 @@ The application employs a consistent **Master-Detail** pattern across all major 
   - Smooth expand/collapse animation
 - **Menu Content Structure:** Each nav item has dedicated menu content
 
+#### HomeView Component
+- **File:** `src/app/components/HomeView.tsx`
+- **Features:**
+  - Welcome message with date/time
+  - Quick stats overview
+  - Recent activity feed
+  - Quick actions
+  - Performance optimized background blur
+- **Styling:** Modern dashboard layout with glassmorphism cards
+
 #### Workspace Component
 - **File:** `src/app/components/Workspace.tsx`
 - **Features:**
@@ -271,9 +299,9 @@ The application employs a consistent **Master-Detail** pattern across all major 
 #### UserControl Component
 - **File:** `src/app/components/UserControl.tsx`
 - **Views:**
-  - User Directory
-  - User Admin
-  - Direct Messages
+  - User Directory (`src/app/components/usercontrol/UserDirectory.tsx`)
+  - User Admin (`src/app/components/usercontrol/UserAdmin.tsx`)
+  - Direct Messages (`src/app/components/usercontrol/DirectMessages.tsx`)
 - **Features:**
   - User list with status
   - Administrative controls
@@ -288,6 +316,7 @@ The application employs a consistent **Master-Detail** pattern across all major 
   - Search and filtering by category
   - Type-specific detail views with specialized actions
   - Secure handling of sensitive data (masking/unmasking)
+  - Create resource dialog
 - **Data Structure:** `ResourceItem` with polymorphic metadata
 
 #### MetadataSidebar Component
