@@ -57,6 +57,7 @@ import { MetadataSidebar } from './components/MetadataSidebar';
 import { BottomStatusBar } from './components/BottomStatusBar';
 import { BottomPanels } from './components/BottomPanels';
 import { ResourcesView } from './components/resources/ResourcesView';
+import { FilesView } from './components/files/FilesView';
 import { HomeView } from './components/HomeView';
 import { Project } from './data/projects';
 import { LaunchpadItem } from './data/launchpad';
@@ -215,6 +216,8 @@ export default function App() {
               setSelectedNavItem(nav);
               if (nav !== 'home') setExpandedMenu(true);
             }} />
+          ) : selectedNavItem === 'files' ? (
+            <FilesView />
           ) : (
             <Workspace 
               selectedNavItem={selectedNavItem} 
