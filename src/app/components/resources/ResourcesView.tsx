@@ -108,10 +108,11 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
             </div>
             <button 
               onClick={handleCreateClick}
-              className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-lg shadow-blue-500/20"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border border-blue-400/30 hover:border-blue-400/50 text-blue-400 text-sm transition-all duration-200 relative group overflow-hidden flex items-center gap-2"
             >
-              <Plus className="w-4 h-4" />
-              Add Resource
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-blue-400/10 to-blue-400/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <Plus className="w-4 h-4 relative" />
+              <span className="relative">Add Resource</span>
             </button>
           </div>
         </div>
@@ -119,6 +120,7 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
         {/* Search */}
         <div className="relative group max-w-2xl">
           <div className="absolute inset-0 bg-white/5 rounded-xl border border-white/10 group-hover:border-blue-400/30 transition-colors" />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-blue-400/5 to-blue-400/0 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
           <div className="relative flex items-center gap-3 px-4 py-3">
             <Search className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
             <input
@@ -135,22 +137,41 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-8">
         {viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredItems.map((item, index) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
                 onMouseEnter={() => setHoveredItem(item.id)}
                 onMouseLeave={() => setHoveredItem(null)}
                 onClick={() => onSelectItem?.(item)}
                 className="relative group cursor-pointer"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${getTypeColor(item.type)} rounded-2xl opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-20`} />
+                <motion.div 
+                  className={`absolute inset-0 bg-gradient-to-br ${getTypeColor(item.type)} rounded-2xl blur-xl`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: hoveredItem === item.id ? 0.4 : 0 }}
+                  transition={{ duration: 0.3 }}
+                />
                 
-                <div className="relative h-full bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                  <div className="flex items-start justify-between mb-4">
+                <div className="relative h-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-colors overflow-hidden">
+                  {/* Shimmer effect */}
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
+                    animate={{ 
+                      x: hoveredItem === item.id ? ['-100%', '100%'] : '-100%',
+                    }}
+                    transition={{ 
+                      duration: 1.5, 
+                      ease: "easeInOut",
+                      repeat: hoveredItem === item.id ? Infinity : 0,
+                      repeatDelay: 0.5
+                    }}
+                  />
+
+                  <div className="relative flex items-start justify-between mb-4">
                     <div className={`p-2.5 rounded-xl bg-gradient-to-br ${getTypeColor(item.type)} bg-opacity-10`}>
                       <div className="text-white">
                         {getIconForType(item.type)}
@@ -192,7 +213,6 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
                       </span>
                     )}
                   </div>
-                </div>
               </motion.div>
             ))}
           </div>

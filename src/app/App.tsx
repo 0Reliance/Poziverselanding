@@ -63,6 +63,7 @@ import { Project } from './data/projects';
 import { LaunchpadItem } from './data/launchpad';
 import { User, users } from './data/users';
 import { ResourceItem } from './components/resources/types';
+import { FileSource } from './data/files';
 
 export default function App() {
   // Navigation state
@@ -77,6 +78,7 @@ export default function App() {
   const [selectedLaunchpadItem, setSelectedLaunchpadItem] = useState<LaunchpadItem | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedResource, setSelectedResource] = useState<ResourceItem | null>(null);
+  const [selectedFileSource, setSelectedFileSource] = useState<FileSource | null>(null);
   
   // Panel visibility state (desktop only)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
@@ -119,6 +121,12 @@ export default function App() {
     if (panel === 'terminal') setIsTerminalOpen(false);
     if (panel === 'output') setIsOutputOpen(false);
     if (panel === 'problems') setIsProblemsOpen(false);
+  };
+
+  const handleSwitchPanel = (panel: 'terminal' | 'output' | 'problems') => {
+    setIsTerminalOpen(panel === 'terminal');
+    setIsOutputOpen(panel === 'output');
+    setIsProblemsOpen(panel === 'problems');
   };
 
   return (
@@ -186,6 +194,7 @@ export default function App() {
                 setSelectedProject(null);
                 setSelectedUser(null);
                 setSelectedResource(null);
+                setSelectedFileSource(null);
               }}
             />
           ) : selectedNavItem === 'usercontrol' ? (
@@ -198,6 +207,7 @@ export default function App() {
                   setSelectedProject(null);
                   setSelectedLaunchpadItem(null);
                   setSelectedResource(null);
+                  setSelectedFileSource(null);
                 }
               }}
             />
@@ -209,6 +219,7 @@ export default function App() {
                 setSelectedProject(null);
                 setSelectedLaunchpadItem(null);
                 setSelectedUser(null);
+                setSelectedFileSource(null);
               }}
             />
           ) : selectedNavItem === 'home' ? (
@@ -217,7 +228,15 @@ export default function App() {
               if (nav !== 'home') setExpandedMenu(true);
             }} />
           ) : selectedNavItem === 'files' ? (
-            <FilesView />
+            <FilesView 
+              onSelectSource={(source) => {
+                setSelectedFileSource(source);
+                setSelectedProject(null);
+                setSelectedLaunchpadItem(null);
+                setSelectedUser(null);
+                setSelectedResource(null);
+              }}
+            />
           ) : (
             <Workspace 
               selectedNavItem={selectedNavItem} 
@@ -225,6 +244,7 @@ export default function App() {
                 setSelectedProject(project);
                 setSelectedLaunchpadItem(null);
                 setSelectedUser(null);
+                setSelectedFileSource(null);
               }}
             />
           )}
@@ -236,6 +256,7 @@ export default function App() {
               selectedLaunchpadItem={selectedLaunchpadItem}
               selectedUser={selectedUser}
               selectedResource={selectedResource}
+              selectedFileSource={selectedFileSource}
             />
           )}
         </div>
@@ -257,6 +278,7 @@ export default function App() {
           isOutputOpen={isOutputOpen}
           isProblemsOpen={isProblemsOpen}
           onClose={handleClosePanel}
+          onSwitch={handleSwitchPanel}
         />
       </div>
       

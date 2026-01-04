@@ -6,13 +6,15 @@ interface BottomPanelsProps {
   isOutputOpen: boolean;
   isProblemsOpen: boolean;
   onClose: (panel: 'terminal' | 'output' | 'problems') => void;
+  onSwitch: (panel: 'terminal' | 'output' | 'problems') => void;
 }
 
 export function BottomPanels({ 
   isTerminalOpen, 
   isOutputOpen, 
   isProblemsOpen,
-  onClose 
+  onClose,
+  onSwitch
 }: BottomPanelsProps) {
   // Determine which panel to show (priority: terminal > output > problems)
   const activePanel = isTerminalOpen ? 'terminal' : isOutputOpen ? 'output' : isProblemsOpen ? 'problems' : null;
@@ -37,7 +39,7 @@ export function BottomPanels({
             <div className="flex items-center justify-between h-9 px-3 border-b border-white/10">
               <div className="flex items-center gap-1">
                 <button
-                  onClick={() => onClose('terminal')}
+                  onClick={() => activePanel === 'terminal' ? onClose('terminal') : onSwitch('terminal')}
                   className={`px-3 py-1 rounded-t text-xs flex items-center gap-2 transition-all ${
                     activePanel === 'terminal'
                       ? 'bg-white/10 text-cyan-400 border-t border-l border-r border-cyan-400/30'
@@ -60,7 +62,7 @@ export function BottomPanels({
                 </button>
 
                 <button
-                  onClick={() => onClose('output')}
+                  onClick={() => activePanel === 'output' ? onClose('output') : onSwitch('output')}
                   className={`px-3 py-1 rounded-t text-xs flex items-center gap-2 transition-all ${
                     activePanel === 'output'
                       ? 'bg-white/10 text-cyan-400 border-t border-l border-r border-cyan-400/30'
@@ -83,7 +85,7 @@ export function BottomPanels({
                 </button>
 
                 <button
-                  onClick={() => onClose('problems')}
+                  onClick={() => activePanel === 'problems' ? onClose('problems') : onSwitch('problems')}
                   className={`px-3 py-1 rounded-t text-xs flex items-center gap-2 transition-all ${
                     activePanel === 'problems'
                       ? 'bg-white/10 text-cyan-400 border-t border-l border-r border-cyan-400/30'

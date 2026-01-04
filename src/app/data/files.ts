@@ -14,6 +14,8 @@ export interface FileSource {
   lastSync: string;
   icon: any;
   color: 'cyan' | 'blue' | 'purple' | 'pink' | 'green' | 'yellow' | 'orange';
+  notes?: string;
+  credentialsId?: string;
 }
 
 export const fileSources: FileSource[] = [
@@ -27,7 +29,9 @@ export const fileSources: FileSource[] = [
     capacity: { used: 45.5, total: 100 },
     lastSync: '2 mins ago',
     icon: Cloud,
-    color: 'blue'
+    color: 'blue',
+    notes: 'Personal Google Drive account. Contains design assets and project documentation.',
+    credentialsId: 'cred_gdrive_01'
   },
   {
     id: 'fs2',
@@ -39,7 +43,9 @@ export const fileSources: FileSource[] = [
     capacity: { used: 1240, total: 5000 },
     lastSync: 'Syncing...',
     icon: Database,
-    color: 'orange'
+    color: 'orange',
+    notes: 'Main S3 bucket for production media assets. Read-only access for most users.',
+    credentialsId: 'cred_aws_prod'
   },
   {
     id: 'fs3',
@@ -51,7 +57,9 @@ export const fileSources: FileSource[] = [
     capacity: { used: 82, total: 250 },
     lastSync: '1 hour ago',
     icon: Server,
-    color: 'purple'
+    color: 'purple',
+    notes: 'Development server for testing deployments. SSH key access required.',
+    credentialsId: 'cred_ssh_dev01'
   },
   {
     id: 'fs4',

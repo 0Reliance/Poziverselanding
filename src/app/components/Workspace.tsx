@@ -207,9 +207,9 @@ export function Workspace({ selectedNavItem, isMobile = false, onSelectProject }
                               e.stopPropagation();
                               window.open(item.liveUrl, '_blank');
                             }}
-                            className="px-2.5 py-1 rounded-lg bg-white text-black text-[10px] font-bold uppercase tracking-wider hover:scale-105 transition-transform flex items-center gap-1.5 shadow-lg mr-1"
+                            className="px-3 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider hover:bg-white/20 hover:scale-105 transition-all flex items-center gap-1.5 shadow-lg mr-1 group/btn"
                           >
-                            <ExternalLink className="w-3 h-3" />
+                            <ExternalLink className="w-3 h-3 text-white/80 group-hover/btn:text-white" />
                             Launch
                           </button>
                         )}

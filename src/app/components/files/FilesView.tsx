@@ -37,10 +37,15 @@ const iconColors = {
   orange: 'text-orange-400',
 };
 
-export function FilesView() {
+interface FilesViewProps {
+  onSelectSource?: (source: FileSource) => void;
+}
+
+export function FilesView({ onSelectSource }: FilesViewProps) {
   const [sources, setSources] = useState<FileSource[]>(fileSources);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [editingSource, setEditingSource] = useState<FileSource | null>(null);
+  const [hoveredSource, setHoveredSource] = useState<string | null>(null);
 
   const handleSaveSource = (source: FileSource) => {
     if (editingSource) {
@@ -106,10 +111,11 @@ export function FilesView() {
              <div className="h-8 w-px bg-white/10 hidden md:block"></div>
             <button 
               onClick={handleCreateClick}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 hover:border-purple-400/50 text-purple-400 text-sm transition-all duration-200 flex items-center gap-2"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 hover:border-purple-400/50 text-purple-400 text-sm transition-all duration-200 relative group overflow-hidden flex items-center gap-2"
             >
-              <Plus className="w-4 h-4" />
-              <span>Add Source</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <Plus className="w-4 h-4 relative" />
+              <span className="relative">Add Source</span>
             </button>
           </div>
         </motion.div>
@@ -121,17 +127,45 @@ export function FilesView() {
           {sources.map((source, index) => {
             const Icon = source.icon;
             const usagePercent = (source.capacity.used / source.capacity.total) * 100;
+            const isHovered = hoveredSource === source.id;
             
             return (
               <motion.div
                 key={source.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                className={`group relative p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/[0.07] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${colorAccents[source.color].split(' ')[1]}`}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                onClick={() => onSelectSource?.(source)}
+                onMouseEnter={() => setHoveredSource(source.id)}
+                onMouseLeave={() => setHoveredSource(null)}
+                className="relative group cursor-pointer"
               >
-                {/* Status Indicator */}
-                <div className="absolute top-6 right-6 flex items-center gap-2">
+                {/* Hover glow effect */}
+                <motion.div 
+                  className={`absolute inset-0 bg-gradient-to-br ${colorGradients[source.color]} rounded-2xl blur-xl`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isHovered ? 0.5 : 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+
+                <div className={`relative h-full p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/[0.07] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden ${colorAccents[source.color].split(' ')[1]}`}>
+                  
+                  {/* Shimmer effect */}
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
+                    animate={{ 
+                      x: isHovered ? ['-100%', '100%'] : '-100%',
+                    }}
+                    transition={{ 
+                      duration: 1.5, 
+                      ease: "easeInOut",
+                      repeat: isHovered ? Infinity : 0,
+                      repeatDelay: 0.5
+                    }}
+                  />
+
+                  {/* Status Indicator */}
+                  <div className="absolute top-6 right-6 flex items-center gap-2 z-10">
                   <div className={`w-2 h-2 rounded-full ${
                     source.status === 'connected' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 
                     source.status === 'syncing' ? 'bg-blue-500 animate-pulse' : 
@@ -160,7 +194,7 @@ export function FilesView() {
                 </div>
 
                 {/* Icon & Title */}
-                <div className="flex items-start gap-4 mb-6">
+                <div className="flex items-start gap-4 mb-6 relative z-10">
                   <div className={`p-3 rounded-xl bg-gradient-to-br ${colorGradients[source.color]} border border-white/10 shadow-inner`}>
                     <Icon className={`w-6 h-6 ${iconColors[source.color]}`} />
                   </div>
@@ -177,12 +211,12 @@ export function FilesView() {
                 </div>
 
                 {/* Path */}
-                <div className="mb-6 p-3 rounded-lg bg-black/20 border border-white/5 font-mono text-xs text-gray-400 truncate">
+                <div className="mb-6 p-3 rounded-lg bg-black/20 border border-white/5 font-mono text-xs text-gray-400 truncate relative z-10">
                   {source.path}
                 </div>
 
                 {/* Capacity */}
-                <div className="space-y-2">
+                <div className="space-y-2 relative z-10">
                   <div className="flex justify-between text-xs">
                     <span className="text-gray-400">Storage Usage</span>
                     <span className="text-white">{source.capacity.used}GB / {source.capacity.total}GB</span>
@@ -191,7 +225,7 @@ export function FilesView() {
                 </div>
 
                 {/* Footer */}
-                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-gray-500">
+                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-gray-500 relative z-10">
                   <div className="flex items-center gap-1.5">
                     <RefreshCw className="w-3 h-3" />
                     <span>Synced {source.lastSync}</span>
@@ -200,6 +234,7 @@ export function FilesView() {
                     <span>Browse Files</span>
                     <ExternalLink className="w-3 h-3" />
                   </button>
+                </div>
                 </div>
               </motion.div>
             );

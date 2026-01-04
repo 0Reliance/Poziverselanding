@@ -1,8 +1,9 @@
-import { Calendar, User as UserIcon, Tag, Clock, FileText, Eye, Users, TrendingUp, Share, Edit3, MessageSquare, Sparkles, Github, ExternalLink, Layers, Code2, Mail, MapPin, Briefcase, Shield, Copy, Globe, Key, Lock, Server, MoreHorizontal } from 'lucide-react';
+import { Calendar, User as UserIcon, Tag, Clock, FileText, Eye, Users, TrendingUp, Share, Edit3, MessageSquare, Sparkles, Github, ExternalLink, Layers, Code2, Mail, MapPin, Briefcase, Shield, Copy, Globe, Key, Lock, Server, MoreHorizontal, HardDrive, Database, Cloud, Laptop, Network } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Project } from '../data/projects';
 import { LaunchpadItem } from '../data/launchpad';
 import { ResourceItem } from './resources/types';
+import { FileSource } from '../data/files';
 import type { User } from '../data/users';
 
 interface MetadataSidebarProps {
@@ -10,9 +11,153 @@ interface MetadataSidebarProps {
   selectedLaunchpadItem?: LaunchpadItem | null;
   selectedUser?: User | null;
   selectedResource?: ResourceItem | null;
+  selectedFileSource?: FileSource | null;
 }
 
-export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, selectedUser, selectedResource }: MetadataSidebarProps) {
+export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, selectedUser, selectedResource, selectedFileSource }: MetadataSidebarProps) {
+  // Handle File Source View
+  if (selectedFileSource) {
+    const Icon = selectedFileSource.icon;
+    const usagePercent = (selectedFileSource.capacity.used / selectedFileSource.capacity.total) * 100;
+
+    return (
+      <div className="relative w-80 flex-shrink-0 z-20 h-full overflow-hidden flex flex-col">
+        {/* Glassmorphism background */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-xl border-l border-white/10">
+          <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-pink-500/5" />
+        </div>
+        
+        {/* Content */}
+        <div className="relative h-full flex flex-col overflow-y-auto custom-scrollbar">
+          {/* Header */}
+          <div className="p-6 border-b border-white/10 flex-shrink-0">
+            <div className="flex items-center justify-between mb-1">
+              <h2 className="text-white font-semibold flex items-center gap-2">
+                <HardDrive className="w-4 h-4 text-purple-400" />
+                Storage Details
+              </h2>
+              <div className="flex items-center gap-2">
+                <button className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+                  <Share className="w-3.5 h-3.5" />
+                </button>
+                <button className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+                  <Edit3 className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+            <p className="text-sm text-gray-500 capitalize">{selectedFileSource.type} Storage</p>
+          </div>
+          
+          {/* Source Header */}
+          <div className="p-6 border-b border-white/10 flex-shrink-0 text-center">
+            <motion.div 
+              className="relative w-20 h-20 mx-auto mb-4"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br from-${selectedFileSource.color}-400 to-${selectedFileSource.color}-600 rounded-2xl opacity-20 blur-xl`} />
+              <div className="relative w-full h-full rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center shadow-2xl">
+                <Icon className="w-8 h-8 text-white" />
+              </div>
+            </motion.div>
+            
+            <h3 className="text-xl text-white font-semibold mb-1">{selectedFileSource.name}</h3>
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <span className={`w-2 h-2 rounded-full ${
+                selectedFileSource.status === 'connected' ? 'bg-green-500' : 
+                selectedFileSource.status === 'syncing' ? 'bg-blue-500 animate-pulse' : 
+                'bg-red-500'
+              }`} />
+              <p className="text-gray-400 text-sm font-medium capitalize">{selectedFileSource.status}</p>
+            </div>
+            
+            <div className="flex flex-wrap gap-2 justify-center">
+              <span className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] text-gray-400 uppercase tracking-wider">
+                {selectedFileSource.provider}
+              </span>
+              <span className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] text-gray-400 uppercase tracking-wider">
+                {selectedFileSource.capacity.total} GB
+              </span>
+            </div>
+          </div>
+
+          {/* Info Grid */}
+          <div className="p-6 space-y-6">
+            {/* Connection Info */}
+            <div className="space-y-2">
+              <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider flex items-center gap-2">
+                <Network className="w-3 h-3" />
+                Connection Path
+              </h4>
+              <div className="p-3 rounded-lg bg-black/40 border border-white/10 font-mono text-xs text-gray-300 break-all">
+                {selectedFileSource.path}
+              </div>
+            </div>
+
+            {/* Capacity */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider flex items-center gap-2">
+                  <Database className="w-3 h-3" />
+                  Capacity Usage
+                </h4>
+                <span className="text-xs text-white font-mono">{usagePercent.toFixed(1)}%</span>
+              </div>
+              <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                <div 
+                  className={`h-full bg-${selectedFileSource.color}-500 transition-all duration-500`} 
+                  style={{ width: `${usagePercent}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-[10px] text-gray-500">
+                <span>{selectedFileSource.capacity.used} GB Used</span>
+                <span>{selectedFileSource.capacity.total} GB Total</span>
+              </div>
+            </div>
+
+            {/* Credentials */}
+            {selectedFileSource.credentialsId && (
+              <div className="space-y-2">
+                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider flex items-center gap-2">
+                  <Key className="w-3 h-3" />
+                  Credentials
+                </h4>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-green-400" />
+                    <span className="text-sm text-gray-300">Managed Identity</span>
+                  </div>
+                  <button className="text-xs text-cyan-400 hover:text-cyan-300">Manage</button>
+                </div>
+              </div>
+            )}
+
+            {/* Notes */}
+            {selectedFileSource.notes && (
+              <div className="space-y-2">
+                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider flex items-center gap-2">
+                  <FileText className="w-3 h-3" />
+                  Notes
+                </h4>
+                <p className="text-sm text-gray-400 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
+                  {selectedFileSource.notes}
+                </p>
+              </div>
+            )}
+
+            {/* Last Sync */}
+            <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-500">
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5" />
+                Last synced {selectedFileSource.lastSync}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Handle Resource View
   if (selectedResource) {
     const getIcon = () => {
