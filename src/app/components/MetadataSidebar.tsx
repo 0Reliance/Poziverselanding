@@ -1,4 +1,4 @@
-import { Calendar, User as UserIcon, Tag, Clock, FileText, Eye, Users, TrendingUp, Share, Edit3, MessageSquare, Sparkles, Github, ExternalLink, Layers, Code2, Mail, MapPin, Briefcase, Shield } from 'lucide-react';
+import { Calendar, User as UserIcon, Tag, Clock, FileText, Eye, Users, TrendingUp, Share, Edit3, MessageSquare, Sparkles, Github, ExternalLink, Layers, Code2, Mail, MapPin, Briefcase, Shield, Copy, Globe, Key, Lock, Server, MoreHorizontal } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Project } from '../data/projects';
 import { LaunchpadItem } from '../data/launchpad';
@@ -15,6 +15,18 @@ interface MetadataSidebarProps {
 export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, selectedUser, selectedResource }: MetadataSidebarProps) {
   // Handle Resource View
   if (selectedResource) {
+    const getIcon = () => {
+      switch (selectedResource.type) {
+        case 'snippet': return Code2;
+        case 'key': return Key;
+        case 'secret': return Lock;
+        case 'bookmark': return Globe;
+        case 'server': return Server;
+        default: return MoreHorizontal;
+      }
+    };
+    const Icon = getIcon();
+
     return (
       <div className="relative w-80 flex-shrink-0 z-20 h-full overflow-hidden flex flex-col">
         {/* Glassmorphism background */}
@@ -28,7 +40,7 @@ export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, select
           <div className="p-6 border-b border-white/10 flex-shrink-0">
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-white font-semibold flex items-center gap-2">
-                <Code2 className="w-4 h-4 text-cyan-400" />
+                <Icon className="w-4 h-4 text-cyan-400" />
                 Resource Details
               </h2>
               <div className="flex items-center gap-2">
@@ -52,7 +64,7 @@ export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, select
             >
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl opacity-20 blur-xl" />
               <div className="relative w-full h-full rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center shadow-2xl">
-                <FileText className="w-8 h-8 text-white" />
+                <Icon className="w-8 h-8 text-white" />
               </div>
             </motion.div>
             
@@ -70,9 +82,25 @@ export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, select
 
           {/* Info Grid */}
           <div className="p-6 space-y-6">
+            {/* Description */}
+            {selectedResource.metadata.description && (
+              <div className="space-y-2">
+                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">Description</h4>
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  {selectedResource.metadata.description}
+                </p>
+              </div>
+            )}
+
+            {/* Snippet Specific */}
             {selectedResource.type === 'snippet' && selectedResource.content && (
               <div className="space-y-3">
-                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">Code Snippet</h4>
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">Code Snippet</h4>
+                  <button className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                    <Copy className="w-3 h-3" /> Copy
+                  </button>
+                </div>
                 <div className="bg-[#0d1117] rounded-xl border border-white/20 overflow-hidden shadow-lg">
                   <div className="p-3 overflow-x-auto">
                     <pre className="font-mono text-xs text-gray-200 leading-relaxed">
@@ -83,20 +111,68 @@ export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, select
               </div>
             )}
 
-            {selectedResource.type === 'key' && selectedResource.metadata.value && (
+            {/* Key/Secret Specific */}
+            {(selectedResource.type === 'key' || selectedResource.type === 'secret') && selectedResource.metadata.value && (
               <div className="space-y-3">
-                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">API Key</h4>
-                <div className="bg-white/5 rounded-xl border border-white/10 p-3">
-                  <code className="font-mono text-xs text-gray-300 break-all">
+                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+                  {selectedResource.type === 'key' ? 'API Key' : 'Secret Value'}
+                </h4>
+                <div className="bg-white/5 rounded-xl border border-white/10 p-3 flex items-center gap-2">
+                  <code className="font-mono text-xs text-gray-300 break-all flex-1">
                     {selectedResource.metadata.value}
                   </code>
+                  <button className="p-1.5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-colors">
+                    <Copy className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
             )}
 
+            {/* Bookmark Specific */}
+            {selectedResource.type === 'bookmark' && selectedResource.metadata.url && (
+              <div className="space-y-3">
+                <a 
+                  href={selectedResource.metadata.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-medium hover:bg-cyan-500/20 transition-colors"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Open Link
+                </a>
+              </div>
+            )}
+
+            {/* Server Specific */}
+            {selectedResource.type === 'server' && (
+              <div className="space-y-3">
+                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">Server Details</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                    <span className="text-xs text-gray-500 block mb-1">IP Address</span>
+                    <span className="text-sm text-gray-300 font-mono">{selectedResource.metadata.ip || 'N/A'}</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                    <span className="text-xs text-gray-500 block mb-1">Status</span>
+                    <span className="text-sm text-green-400 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                      {selectedResource.metadata.status || 'Unknown'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Common Metadata Fields */}
             <div className="space-y-3">
-              <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">Metadata</h4>
+              <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">Details</h4>
               <div className="space-y-2">
+                {selectedResource.metadata.environment && (
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                    <span className="text-xs text-gray-500">Environment</span>
+                    <span className="text-xs text-gray-300">{selectedResource.metadata.environment}</span>
+                  </div>
+                )}
                 <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
                   <span className="text-xs text-gray-500">Created</span>
                   <span className="text-xs text-gray-300">{selectedResource.createdAt}</span>
@@ -107,8 +183,35 @@ export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, select
                     <span className="text-xs text-gray-300">{selectedResource.updatedAt}</span>
                   </div>
                 )}
+                {selectedResource.metadata.lastRotated && (
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                    <span className="text-xs text-gray-500">Last Rotated</span>
+                    <span className="text-xs text-gray-300">{selectedResource.metadata.lastRotated}</span>
+                  </div>
+                )}
               </div>
             </div>
+
+            {/* Usage Stats (if available) */}
+            {selectedResource.metadata.usage && (
+              <div className="space-y-3">
+                <h4 className="text-xs text-gray-500 font-medium uppercase tracking-wider">Usage Statistics</h4>
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-center">
+                    <span className="text-[10px] text-gray-500 block">Today</span>
+                    <span className="text-sm font-medium text-white">{selectedResource.metadata.usage.today || 0}</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-center">
+                    <span className="text-[10px] text-gray-500 block">Week</span>
+                    <span className="text-sm font-medium text-white">{selectedResource.metadata.usage.thisWeek || 0}</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-center">
+                    <span className="text-[10px] text-gray-500 block">Month</span>
+                    <span className="text-sm font-medium text-white">{selectedResource.metadata.usage.thisMonth || 0}</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -400,7 +503,7 @@ export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, select
 
   const metadata = [
     { label: 'Modified', value: selectedProject.lastUpdated, icon: Clock },
-    { label: 'Owner', value: selectedProject.collaborators[0]?.name || 'Unknown', icon: User },
+    { label: 'Owner', value: selectedProject.collaborators[0]?.name || 'Unknown', icon: UserIcon },
     { label: 'Status', value: selectedProject.status, icon: FileText },
     { label: 'Views', value: selectedProject.stats.views.toString(), icon: Eye },
   ];
@@ -479,100 +582,33 @@ export function MetadataSidebar({ selectedProject, selectedLaunchpadItem, select
           </div>
         </div>
 
-        {/* Tech Stack */}
-        <div className="px-6 py-4 border-b border-white/10 flex-shrink-0">
-          <h3 className="text-sm text-gray-400 font-medium mb-3 flex items-center gap-2">
-            <Code2 className="w-3.5 h-3.5" />
-            Tech Stack
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {selectedProject.techStack.map((tech) => (
-              <span key={tech} className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-gray-300">
-                {tech}
-              </span>
-            ))}
-          </div>
+        {/* Metadata Grid */}
+        <div className="p-6 space-y-4">
+          {metadata.map((item, index) => (
+            <motion.div 
+              key={item.label}
+              className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-white/5 text-gray-400">
+                  <item.icon className="w-4 h-4" />
+                </div>
+                <span className="text-sm text-gray-400">{item.label}</span>
+              </div>
+              <span className="text-sm text-white font-medium">{item.value}</span>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Collaborators section */}
-        <div className="px-6 py-4 border-b border-white/10 flex-shrink-0">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm text-gray-400 font-medium flex items-center gap-2">
-              <Users className="w-3.5 h-3.5" />
-              Team
-            </h3>
-            <span className="text-xs text-cyan-400">{selectedProject.collaborators.length} active</span>
-          </div>
-          <div className="flex items-center gap-2">
-            {selectedProject.collaborators.map((collaborator, index) => (
-              <motion.div
-                key={index}
-                className="relative group cursor-pointer"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                whileHover={{ scale: 1.1, y: -2 }}
-              >
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400/20 to-blue-500/20 border border-cyan-400/40 flex items-center justify-center">
-                  <span className="text-xs text-cyan-400 font-semibold">{collaborator.initials}</span>
-                </div>
-                <div className={`absolute bottom-0 right-0 w-2 h-2 rounded-full border-2 border-black ${
-                  collaborator.status === 'online' ? 'bg-green-400' : 'bg-gray-400'
-                }`} />
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black/90 backdrop-blur-xl border border-white/20 rounded text-xs text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                  {collaborator.name}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-        
-        {/* Metadata list */}
-        <div className="p-6 space-y-3 flex-shrink-0">
-          {metadata.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <motion.div 
-                key={item.label} 
-                className="group relative"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-              >
-                <div className="absolute inset-0 bg-white/5 rounded-xl border border-white/10 group-hover:bg-white/10 group-hover:border-cyan-400/30 transition-all duration-200" />
-                <div className="relative p-3 flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-4 h-4 text-cyan-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-gray-500 font-medium">{item.label}</p>
-                    <p className="text-sm text-gray-300 truncate">{item.value}</p>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-        
-        {/* Activity section */}
-        <div className="p-6 border-t border-white/10 flex-shrink-0 pb-20">
-          <h3 className="text-sm text-gray-400 mb-4 font-medium flex items-center gap-2">
-            <TrendingUp className="w-3.5 h-3.5 text-cyan-400" />
-            Recent Activity
-          </h3>
-          <div className="space-y-4">
-            {selectedProject.activity.map((activity, index) => (
-              <div key={index} className="relative pl-4 border-l border-white/10">
-                <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-cyan-500/20 border border-cyan-500/50" />
-                <p className="text-sm text-gray-300">{activity.action}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs text-cyan-400">{activity.user}</span>
-                  <span className="text-[10px] text-gray-600">•</span>
-                  <span className="text-xs text-gray-500">{activity.time}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Description */}
+        <div className="p-6 border-t border-white/10">
+          <h3 className="text-sm text-gray-400 mb-2 font-medium">Description</h3>
+          <p className="text-sm text-gray-300 leading-relaxed">
+            {selectedProject.description}
+          </p>
         </div>
       </div>
     </div>

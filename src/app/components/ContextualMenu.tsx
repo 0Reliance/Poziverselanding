@@ -62,15 +62,6 @@ const menuContent: Record<string, { title: string; items: Array<{ name: string; 
       { name: 'Data & Analytics', count: 6 },
     ],
   },
-  folders: {
-    title: 'Folders',
-    items: [
-      { name: 'Work', count: 34, starred: true },
-      { name: 'Personal', count: 21 },
-      { name: 'Archive', count: 67 },
-      { name: 'Shared', count: 19, trend: '+4' },
-    ],
-  },
   usercontrol: {
     title: 'User Control',
     items: [

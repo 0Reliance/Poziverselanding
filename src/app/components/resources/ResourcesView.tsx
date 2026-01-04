@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Search, Filter, Plus, Grid, List as ListIcon, Code, Key, Shield, Globe, Server, FileJson, Star } from 'lucide-react';
+import { Search, Filter, Plus, Grid, List as ListIcon, Code, Key, Shield, Globe, Server, FileJson, Star, Edit, Trash2 } from 'lucide-react';
 import { resources } from './data';
 import { ResourceItem } from './types';
 import { cn } from '@/app/components/ui/utils';
+import { CreateResourceDialog } from './CreateResourceDialog';
 
 interface ResourcesViewProps {
   selectedCategory: string;
@@ -11,11 +12,16 @@ interface ResourcesViewProps {
 }
 
 export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewProps) {
+  const [items, setItems] = useState<ResourceItem[]>(resources);
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  
+  // Dialog State
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [editingResource, setEditingResource] = useState<ResourceItem | null>(null);
 
-  const filteredItems = resources.filter(item => {
+  const filteredItems = items.filter(item => {
     if (selectedCategory !== 'all' && item.type !== selectedCategory) return false;
     if (searchQuery && !item.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
@@ -41,6 +47,36 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
       case 'server': return 'from-purple-400 to-violet-500';
       default: return 'from-gray-400 to-gray-500';
     }
+  };
+
+  const handleSaveResource = (resource: ResourceItem) => {
+    if (editingResource) {
+      setItems(items.map(item => item.id === resource.id ? resource : item));
+      setEditingResource(null);
+    } else {
+      setItems([resource, ...items]);
+    }
+  };
+
+  const handleDeleteResource = (id: string) => {
+    if (confirm('Are you sure you want to delete this resource?')) {
+      setItems(items.filter(item => item.id !== id));
+      if (onSelectItem) {
+        // Deselect if currently selected (optional, but good UX)
+        // Since we don't know which one is selected in parent, we can't easily do this here without more props
+        // But it's fine for now.
+      }
+    }
+  };
+
+  const handleEditClick = (item: ResourceItem) => {
+    setEditingResource(item);
+    setIsCreateDialogOpen(true);
+  };
+
+  const handleCreateClick = () => {
+    setEditingResource(null);
+    setIsCreateDialogOpen(true);
   };
 
   return (
@@ -70,7 +106,10 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
                 <ListIcon className="w-4 h-4" />
               </button>
             </div>
-            <button className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-lg shadow-blue-500/20">
+            <button 
+              onClick={handleCreateClick}
+              className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-lg shadow-blue-500/20"
+            >
               <Plus className="w-4 h-4" />
               Add Resource
             </button>
@@ -117,7 +156,25 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
                         {getIconForType(item.type)}
                       </div>
                     </div>
-                    {item.isFavorite && <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />}
+                    <div className="flex items-center gap-1">
+                      {item.isFavorite && <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />}
+                      
+                      {/* Action Buttons */}
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); handleEditClick(item); }}
+                          className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                        >
+                          <Edit className="w-3.5 h-3.5" />
+                        </button>
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); handleDeleteResource(item.id); }}
+                          className="p-1.5 rounded-lg hover:bg-red-500/20 text-gray-400 hover:text-red-400 transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   <h3 className="text-white font-medium mb-1 truncate">{item.title}</h3>
@@ -172,11 +229,34 @@ export function ResourcesView({ selectedCategory, onSelectItem }: ResourcesViewP
                 <div className="text-gray-500 text-xs">
                   {item.createdAt}
                 </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-2">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); handleEditClick(item); }}
+                    className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                  </button>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); handleDeleteResource(item.id); }}
+                    className="p-1.5 rounded-lg hover:bg-red-500/20 text-gray-400 hover:text-red-400 transition-colors"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </motion.div>
             ))}
           </div>
         )}
       </div>
+
+      <CreateResourceDialog 
+        open={isCreateDialogOpen} 
+        onOpenChange={setIsCreateDialogOpen} 
+        onSave={handleSaveResource}
+        initialData={editingResource}
+      />
     </div>
   );
 }
